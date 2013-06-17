@@ -1,7 +1,21 @@
-@(message: String)
+@(answers: List[models.Answer])
 
-@main("Welcome to Play 2.1") {
-    
-    @play20.welcome(message)
-    
+@main {
+  
+  <p><a class="btn btn-primary" href="@routes.Application.resetData()">Reset database</a></p>
+
+  <table>
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+      <th>Description</th>
+    </tr>
+    @for(answer <- answers) {
+      <tr>
+        <td>@answer.id</td>
+        <td>@answer.name</td>
+        <td>@answer.description</td>
+      </tr>
+    }
+  </table>
 }

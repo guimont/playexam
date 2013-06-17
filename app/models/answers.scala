@@ -19,7 +19,7 @@ case class Answer(
 /**
  * Slick database mapping.
  */
-object Answers extends Table[Answer]("answer") {
+object Answers extends Table[Answer]("answers") {
   def id = column[Long]("id", O.PrimaryKey)
   def name = column[String]("name")
   def description = column[String]("description")
@@ -46,7 +46,7 @@ object Answers extends Table[Answer]("answer") {
   /**
    * Adds the given product to the database.
    */
-  def insert(answer: Answer): Int = {
+  def insertDB(answer: Answer): Int = {
     Database.forDataSource(DB.getDataSource()) withSession {
       Answers.insert(answer)
     }
