@@ -20,7 +20,7 @@ case class Answer(
  * Slick database mapping.
  */
 object Answers extends Table[Answer]("answers") {
-  def id = column[Long]("id", O.PrimaryKey)
+  def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def name = column[String]("name")
   def description = column[String]("description")
   def * = id ~ name ~ description <> (Answer, Answer.unapply _)

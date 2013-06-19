@@ -8,13 +8,13 @@ create table if not exists "answers" (
 
 
 create table if not exists "responses" (
-  "id" BIGINT NOT NULL PRIMARY KEY,
+  "responseId" BIGINT NOT NULL PRIMARY KEY,
   "answerId" BIGINT NOT NULL,
-  "resp" VARCHAR(1024),
-  "selected" BOOLEAN
+  "response" VARCHAR(1024) NOT NULL
 );
 
 # --- !Downs
 
 drop table answers;
+drop table responses;
 
