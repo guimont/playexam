@@ -1,17 +1,18 @@
 # --- !Ups
 
-create table if not exists "answers" (
-  "id" BIGINT NOT NULL PRIMARY KEY,
+create table if not exists "questions" (
+  "id" BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   "name" VARCHAR(254) NOT NULL,
   "description" VARCHAR(1024) NOT NULL
 );
 
 
 create table if not exists "responses" (
-  "responseId" BIGINT NOT NULL PRIMARY KEY,
+  "responseId" BIGINT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   "answerId" BIGINT NOT NULL,
   "response" VARCHAR(1024) NOT NULL
 );
+
 
 # --- !Downs
 

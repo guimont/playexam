@@ -1,4 +1,4 @@
-@(answers: List[models.Answer])
+@(questions: List[models.Question])
 
 @main {
   
@@ -10,11 +10,11 @@
       <th>Name</th>
       <th>Description</th>
     </tr>
-    @for(answer <- answers) {
+    @for(question <- questions) {
       <tr>
-        <td>@answer.id</td>
-        <td>@answer.name</td>
-        <td>@answer.description</td>
+        <td>@question.id</td>
+        <td>@question.name</td>
+        <td>@question.description</td>
       </tr>
     }
   </table>

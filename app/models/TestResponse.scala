@@ -11,7 +11,7 @@ import play.api.Play.current
  * Answer domain model.
  */
 case class TestResponse(
-  id: Long,
+  id: Option[Long],
   answerId: Long,
   resp: String)
 
@@ -21,8 +21,9 @@ object TestResponses extends Table[TestResponse]("responses") {
   def answerId = column[Long]("answerId")
   def resp = column[String]("response")
 
-  def * = id ~ answerId ~ resp  <> (TestResponse, TestResponse.unapply _)
-  def answer = foreignKey("answer_fk", answerId, Answers)(_.id)
+  def * = id.? ~ answerId ~ resp  <> (TestResponse, TestResponse.unapply _)
+  def autoInc = id.?  ~ answerId ~ resp  <> (TestResponse, TestResponse.unapply _) returning id
+  //def answer = foreignKey("answer_fk", answerId, Answers)(_.id)
 
   val byId = createFinderBy(_.id)
   val byAnswerId = createFinderBy(_.answerId)
@@ -42,9 +43,10 @@ object TestResponses extends Table[TestResponse]("responses") {
    /**
    * Adds the given product to the database.
    */
-  def insertDB(response: TestResponse): Int = {
+  def insertDB(response: TestResponse): Long = {
     Database.forDataSource(DB.getDataSource()) withSession {
-      TestResponses.insert(response)
+      val r = TestResponse(None, response.answerId, response.resp)
+      TestResponses.autoInc.insert(r)
     }
   }
 

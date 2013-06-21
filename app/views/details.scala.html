@@ -1,17 +1,17 @@
-@(answer: Answer,list: Seq[TestResponse])
+@(question: Question,list: Seq[TestResponse])
 
 @main {
   
 
   <dl class="dl-horizontal">
     <dt>"id":</dt>
-    <dd>@answer.id</dd>
+    <dd>@question.id</dd>
 
     <dt>"name":</dt>
-    <dd>@answer.name</dd>
+    <dd>@question.name</dd>
 
     <dt>"description":</dt>
-    <dd>@answer.description</dd>
+    <dd>@question.description</dd>
 
     @for(response <- list) {
 	<dt>"respoonse":</dt>
