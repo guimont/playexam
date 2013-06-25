@@ -1,39 +1,35 @@
 package models
 
-import slick.driver.H2Driver.simple._
-import Database.threadLocalSession
-import play.api.Logger
-import play.api.db.DB
-import scala.slick.session.Database
-import scala.slick.session.Database.threadLocalSession
+import play.api.db.slick.Config.driver.simple._
+import scala.slick.lifted.Query
 import play.api.Play.current
+import play.api.Logger
 /**
- * Answer domain model.
+ * Question domain model.
  */
 case class Answer(
-  id: Long,
-  name: String,
-  description: String)
+  id: Option[Long],
+  Qid: Long,
+  resp: String)
 
 
 /**
  * Slick database mapping.
  */
-object Answers extends Table[Answer]("answers") {
+object Answers extends Table[Answer]("part") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  def name = column[String]("name")
-  def description = column[String]("description")
-  def * = id ~ name ~ description <> (Answer, Answer.unapply _)
+  def qid = column[Long]("qId")
+  def response = column[String]("part")
+  def * = id.? ~ qid ~ response <> (Answer, Answer.unapply _)
+  def autoInc = id.?  ~ qid ~ response  <> (Answer, Answer.unapply _) returning id
 
-  val byId = createFinderBy(_.id)
+  def forInsert =  qid ~ response <> (
+    t => Answer(None, t._1, t._2),
+    (p: Answer) => Some(( p.Qid, p.resp)))
 
 
-  /**
-   * Delete all database rows.
-   * Note that an alternative would be to use slick to run DDL drop and create statements.
-   */
   def reset() {
-    Database.forDataSource(DB.getDataSource()) withSession {
+    play.api.db.slick.DB.withSession { implicit session =>
       // Output database DDL create statements to bootstrap Evolutions file.
       Logger.info(Answers.ddl.dropStatements.mkString("/n"))
       Logger.info(Answers.ddl.createStatements.mkString("/n"))
@@ -44,27 +40,49 @@ object Answers extends Table[Answer]("answers") {
   }
 
   /**
-   * Adds the given product to the database.
+   * Deletes a product.
    */
-  def insertDB(answer: Answer): Int = {
-    Database.forDataSource(DB.getDataSource()) withSession {
-      Answers.insert(answer)
+  def delete(id: Long) {
+    play.api.db.slick.DB.withSession { implicit session =>
+      Answers.where(_.id === id).delete
+    }
+  }
+
+  def find(id: Long): Option[Answer] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Answers).filter(_.id === id).list.headOption
+  }
+
+
+  /**
+   * Returns all products sorted by EAN code.
+   */
+  def findAll: List[Answer] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Answers).sortBy(_.id).list
+  }
+
+  /**
+   * Returns all products sorted by EAN code.
+   */
+  def findAllbyQId(qid: Long): List[Answer] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Answers).filter(_.qid === qid).sortBy(_.id).list
+  }
+
+  /**
+   * Inserts the given product.
+   */
+  def insert(question: Answer) {
+    play.api.db.slick.DB.withSession { implicit session =>
+      Answers.forInsert.insert(question)
     }
   }
 
   /**
-   * Returns a list of products from the database.
+   * Updates the given product.
    */
-  def getAll: List[Answer] = {
-    Database.forDataSource(DB.getDataSource()) withSession {
-      Query(Answers).list
+  def update(id: Long, question: Answer) {
+    play.api.db.slick.DB.withSession { implicit session =>
+      Answers.where(_.id === id).update(question)
     }
   }
 
-  def findById(id: Long): Option[Answer] = Database.forDataSource(DB.getDataSource()) withSession {
-    Answers.byId(id).firstOption
-  }
-/*
-  def getAllProductsWithStockItems: Map[Product, List[StockItem]] = {
-  }*/
 }

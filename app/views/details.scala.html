@@ -1,4 +1,4 @@
-@(question: Question,list: Seq[TestResponse])
+@(question: Question,list: Seq[Answer])
 
 @main {
   
@@ -13,9 +13,9 @@
     <dt>"description":</dt>
     <dd>@question.description</dd>
 
-    @for(response <- list) {
-	<dt>"respoonse":</dt>
-    <dd>@response.resp</dd>
+    @for(answer <- list) {
+	<dt>"answer":</dt>
+    <dd>@answer.resp</dd>
     }
   </dl>
 }

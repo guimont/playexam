@@ -4,12 +4,12 @@ import play.api._
 import play.api.mvc._
 
 import models.{Question,Questions}
-import models.{TestResponse,TestResponses}
+import models.{Answer,Answers}
 
 object Application extends Controller {
   
    def index = Action {
-    Ok(views.html.index(Questions.getAll))
+    Ok(views.html.index(Questions.findAll))
   }
 
   /**
@@ -18,7 +18,7 @@ object Application extends Controller {
   def resetData = Action {
 
     Questions.reset()
-    TestResponses.reset()
+    Answers.reset()
 
     // TODO: replace ID values with generated sequence.
     Redirect(routes.Application.index)
@@ -26,10 +26,10 @@ object Application extends Controller {
 
 	def show(id: Long) = Action { implicit request =>
 
-    Questions.findById(id).map { question =>
+    Questions.find(id).map { question =>
       
 
-      Ok(views.html.details(question,TestResponses.findByAnswerId(id)))
+      Ok(views.html.details(question,Answers.findAllbyQId(id)))
     }.getOrElse(NotFound)
   }
 }
