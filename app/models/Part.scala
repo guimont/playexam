@@ -16,7 +16,7 @@ case class Part(
 /**
  * Slick database mapping.
  */
-object Parts extends Table[Part]("part") {
+object Parts extends Table[Part]("parts") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def qid = column[Long]("qId")
   def part = column[String]("part")

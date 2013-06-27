@@ -4,6 +4,7 @@ import play.api._
 import play.api.mvc._
 
 import models.{Question,Questions}
+import models.{Part,Parts}
 import models.{Answer,Answers}
 
 object Application extends Controller {
@@ -27,9 +28,9 @@ object Application extends Controller {
 	def show(id: Long) = Action { implicit request =>
 
     Questions.find(id).map { question =>
-      
+      Logger.info(question.toString)
 
-      Ok(views.html.details(question,Answers.findAllbyQId(id)))
+      Ok(views.html.details(question,Parts.findAllbyQId(id), Answers.findAllbyQId(id)))
     }.getOrElse(NotFound)
   }
 }

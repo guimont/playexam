@@ -1,21 +1,25 @@
-@(question: Question,list: Seq[Answer])
+@(question: Question, listPart: Seq[Part], list: Seq[Answer])
 
 @main {
   
-
-  <dl class="dl-horizontal">
-    <dt>"id":</dt>
-    <dd>@question.id</dd>
-
-    <dt>"name":</dt>
-    <dd>@question.name</dd>
-
+<table>
+  <dl>
+   
     <dt>"description":</dt>
     <dd>@question.description</dd>
-
-    @for(answer <- list) {
-	<dt>"answer":</dt>
-    <dd>@answer.resp</dd>
+    @for(part <- listPart) {
+        <dd>@part.part</dd>
     }
+    <dt>"answer":</dt>
+     
+    @for((answer, index) <- list.zipWithIndex) {
+   <li>
+    <label class="checkbox inline" id="liext">
+        <input type="checkbox" id="inlineCheckbox1" value="option1" class="form"> @answer.resp
+    </label>
+    </li>
+    }
+     
   </dl>
+</table>
 }

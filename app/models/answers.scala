@@ -16,10 +16,10 @@ case class Answer(
 /**
  * Slick database mapping.
  */
-object Answers extends Table[Answer]("part") {
+object Answers extends Table[Answer]("answers") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def qid = column[Long]("qId")
-  def response = column[String]("part")
+  def response = column[String]("answer")
   def * = id.? ~ qid ~ response <> (Answer, Answer.unapply _)
   def autoInc = id.?  ~ qid ~ response  <> (Answer, Answer.unapply _) returning id
 
