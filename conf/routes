@@ -6,6 +6,7 @@
 GET     /                           controllers.Application.index
 GET 	/reset   					controllers.Application.resetData
 GET 	/exo/:id		  			controllers.Application.show(id: Long)
+POST    /exo/:id       				controllers.Application.answer(id: Long) 
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

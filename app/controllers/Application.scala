@@ -7,6 +7,9 @@ import models.{Question,Questions}
 import models.{Part,Parts}
 import models.{Answer,Answers}
 
+/*https://code.google.com/p/yogamamadvd/source/browse/branches/play2/main/app/models/Cart.scala?r=188*/
+case class index(name:String,res:Boolean)
+
 object Application extends Controller {
   
    def index = Action {
@@ -28,9 +31,18 @@ object Application extends Controller {
 	def show(id: Long) = Action { implicit request =>
 
     Questions.find(id).map { question =>
-      Logger.info(question.toString)
 
-      Ok(views.html.details(question,Parts.findAllbyQId(id), Answers.findAllbyQId(id)))
+      Ok(views.html.details(id,question,Parts.findAllbyQId(id), Answers.findAllbyQId(id)))
     }.getOrElse(NotFound)
+  }
+
+
+  def answer(id: Long) = Action { implicit request =>
+   
+     Logger.info(request.body.toString);
+    var next : Long = 0
+    if (id>=2) next = 1
+    else next = id+1
+    Redirect(routes.Application.show(next))
   }
 }

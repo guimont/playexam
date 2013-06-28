@@ -1,25 +1,38 @@
-@(question: Question, listPart: Seq[Part], list: Seq[Answer])
+@(id: Long, question: Question, listPart: Seq[Part], list: Seq[Answer])
 
 @main {
   
 <table>
   <dl>
    
+    <div class="question">
     <dt>"description":</dt>
     <dd>@question.description</dd>
     @for(part <- listPart) {
         <dd>@part.part</dd>
     }
-    <dt>"answer":</dt>
-     
-    @for((answer, index) <- list.zipWithIndex) {
-   <li>
-    <label class="checkbox inline" id="liext">
-        <input type="checkbox" id="inlineCheckbox1" value="option1" class="form"> @answer.resp
-    </label>
-    </li>
-    }
-     
+    </div>
+
+   
+    
+    <ul class="answer">
+    <form action="@routes.Application.answer(id)" method="post">
+        <dt>"answer":</dt>
+        @for((answer, index) <- list.zipWithIndex) {
+            
+
+ 
+            <div class="controls">
+              <label class="checkbox">
+                <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true">@answer.resp</input>
+              </label>
+            </div>
+        }
+        <button type="submit" class="btn btn-primary">Next</button>
+       
+    </form>
+    </ul>
+
   </dl>
 </table>
 }

@@ -61,12 +61,30 @@ form {
   margin-right: 1em;
 }
 
+
+.question {
+  margin-left: 10%;
+  width: 800px;
+  padding: 10px;
+  background: darkgrey;     
+  border-radius: 10px;
+}
+
+.answer {
+  margin-left: 10%;
+  width: 450px;
+  padding: 10px;
+  background: #ccc;     
+  border-radius: 10px;
+}
+
+
 li {
   background-color: orange;
   background-size: 50%;
   margin-right:auto;
   list-style:none;
-  margin-left: 10%;
+  
 }
 
 .liext {
