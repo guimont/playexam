@@ -2,13 +2,16 @@ package controllers
 
 import play.api._
 import play.api.mvc._
+import play.api.data._
+import play.api.data.Forms._
+import play.api.mvc.RequestHeader
 
 import models.{Question,Questions}
 import models.{Part,Parts}
 import models.{Answer,Answers}
 
 /*https://code.google.com/p/yogamamadvd/source/browse/branches/play2/main/app/models/Cart.scala?r=188*/
-case class index(name:String,res:Boolean)
+case class Index(name:String,res:List[Boolean])
 
 object Application extends Controller {
   
@@ -39,9 +42,9 @@ object Application extends Controller {
 
   def answer(id: Long) = Action { implicit request =>
    
-     Logger.info(request.body.toString);
+    Logger.info(request.body.toString); 
     var next : Long = 0
-    if (id>=2) next = 1
+    if (id>=3) next = 1
     else next = id+1
     Redirect(routes.Application.show(next))
   }

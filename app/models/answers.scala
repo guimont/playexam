@@ -10,7 +10,8 @@ import play.api.Logger
 case class Answer(
   id: Option[Long],
   Qid: Long,
-  resp: String)
+  resp: String,
+  check: Boolean)
 
 
 /**
@@ -20,12 +21,13 @@ object Answers extends Table[Answer]("answers") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def qid = column[Long]("qId")
   def response = column[String]("answer")
-  def * = id.? ~ qid ~ response <> (Answer, Answer.unapply _)
-  def autoInc = id.?  ~ qid ~ response  <> (Answer, Answer.unapply _) returning id
+  def check = column[Boolean]("check")
+  def * = id.? ~ qid ~ response ~ check <> (Answer, Answer.unapply _)
+  def autoInc = id.?  ~ qid ~ response ~ check  <> (Answer, Answer.unapply _) returning id
 
-  def forInsert =  qid ~ response <> (
-    t => Answer(None, t._1, t._2),
-    (p: Answer) => Some(( p.Qid, p.resp)))
+  def forInsert =  qid ~ response ~ check <> (
+    t => Answer(None, t._1, t._2, t._3),
+    (p: Answer) => Some(( p.Qid, p.resp, p.check)))
 
 
   def reset() {

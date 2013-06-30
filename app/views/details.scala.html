@@ -17,16 +17,23 @@
     
     <ul class="answer">
     <form action="@routes.Application.answer(id)" method="post">
+
         <dt>"answer":</dt>
         @for((answer, index) <- list.zipWithIndex) {
-            
+            @if(answer.check ==true){
+                <div class="controls">
+                  <label class="checkbox">
+                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true">@answer.resp</input>
+                  </label>
+                </div>
+            }
+            @else{
+                <label class="control-label" for="description">Answer</label>
+                <div class="controls">
+                <textarea class="input-xlarge" id="description" name="description" rows="3"></textarea>
+                </div>
 
- 
-            <div class="controls">
-              <label class="checkbox">
-                <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true">@answer.resp</input>
-              </label>
-            </div>
+            }
         }
         <button type="submit" class="btn btn-primary">Next</button>
        
