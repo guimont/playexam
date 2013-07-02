@@ -86,4 +86,8 @@ object Results extends Table[Result]("results") {
     }
   }
 
+
+  def decode(id: Long, res:String ) {
+
+  }
 }
