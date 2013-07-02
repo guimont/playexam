@@ -35,12 +35,12 @@ object Candidates extends Table[Candidate]("candidates") {
   = MappedTypeMapper.base[DateTime, Timestamp](dt => new
       Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))
 
-  def * = id.? ~ qid ~ part <> (Candidate, Candidate.unapply _)
-  def autoInc = id.?  ~ qid ~ part  <> (Candidate, Candidate.unapply _) returning id
+  def * = id.? ~ examId.? ~ date ~ firstname ~ lastname<> (Candidate, Candidate.unapply _)
+  def autoInc = id.?  ~ examId.? ~ date ~ firstname ~ lastname  <> (Candidate, Candidate.unapply _) returning id
 
-  def forInsert =  qid ~ part <> (
-    t => Candidate(None, t._1, t._2),
-    (p: Candidate) => Some(( p.Qid, p.part)))
+  def forInsert =  examId.? ~ date ~ firstname ~ lastname <> (
+    t => Candidate(None, t._1, t._2, t._3, t._4),
+    (p: Candidate) => Some(( p.examId, p.date, p.firstname, p.lastname)))
 
 
   def reset() {
@@ -68,18 +68,12 @@ object Candidates extends Table[Candidate]("candidates") {
   }
 
 
+  
   /**
    * Returns all products sorted by EAN code.
    */
-  def findAll: List[Candidate] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Candidates).sortBy(_.id).list
-  }
-
-  /**
-   * Returns all products sorted by EAN code.
-   */
-  def findAllbyQId(qid: Long): List[Candidate] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Candidates).filter(_.qid === qid).sortBy(_.id).list
+  def findAllbyexamId(examId: Long): Option[Candidate] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Candidates).filter(_.examId === examId).list.headOption
   }
 
   /**
