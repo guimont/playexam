@@ -15,7 +15,8 @@ import org.joda.time.DateTime
 case class Candidate(
   id: Option [Long],
   examId: Option [Long],
-  date: DateTime,
+  /*date: DateTime,*/
+  date: String,
   firstname: String,
   lastname: String)
 
@@ -26,7 +27,8 @@ case class Candidate(
 object Candidates extends Table[Candidate]("candidates") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def examId = column[Long]("examId")
-  def date = column[DateTime]("datecrea")
+  /*def date = column[DateTime]("datecrea")*/
+  def date = column[String]("datecrea")
   def firstname = column[String]("firstname")
   def lastname = column[String]("lastname")
 

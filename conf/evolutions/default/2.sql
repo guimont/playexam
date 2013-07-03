@@ -36,3 +36,7 @@ insert into "answers" values (14, 2, 'I.	i=2 j=2',true);
 
 insert into "questions" values ( 3, 'java exo 1', '3.	write a qsort hanoi programm');
 insert into "answers" values (15, 3, 'A.	empty',false);
+
+
+insert into "candidates" values(1,1,'20130703','guillaume','monteilhet');
+insert into "exams"	values(1,1,'20130703',0);

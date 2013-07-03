@@ -9,6 +9,7 @@
   import models.{Question,Questions}
   import models.{Part,Parts}
   import models.{Answer,Answers}
+   import models.{CResult,CResults}
 
   /*https://code.google.com/p/yogamamadvd/source/browse/branches/play2/main/app/models/Cart.scala?r=188*/
   case class Index(name:String,res:List[Boolean])
@@ -48,6 +49,10 @@
     def answer(id: Long) = Action { implicit request =>
      
       Logger.info(request.body.toString); 
+      request.session.get("SessionID").map { Sid =>
+        CResults.decode(id,Sid.toInt,request.body.toString)
+      }
+
       var next : Long = 0
       if (id>=3) next = 1
       else next = id+1
