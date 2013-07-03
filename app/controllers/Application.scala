@@ -65,4 +65,12 @@
     )
 
     }
+
+  def candidates = Action { implicit request =>
+    Ok(views.html.candidate(Candidates.findAll()))
+
+  }
+
+
+
   }
