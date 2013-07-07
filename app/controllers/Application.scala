@@ -9,7 +9,8 @@
   import models.{Question,Questions}
   import models.{Part,Parts}
   import models.{Answer,Answers}
-   import models.{CResult,CResults}
+  import models.{CResult,CResults}
+  import models.{Candidate,Candidates}
 
   /*https://code.google.com/p/yogamamadvd/source/browse/branches/play2/main/app/models/Cart.scala?r=188*/
   case class Index(name:String,res:List[Boolean])
@@ -66,11 +67,12 @@
 
     }
 
-  def candidates = Action { implicit request =>
-    Ok(views.html.candidate(Candidates.findAll()))
 
+
+  def exam (id: Long ) = Action { implicit request =>
+    //Ok(views.html.exam(Exam.findAllbyCId))
+    Ok("exam")
   }
-
 
 
   }

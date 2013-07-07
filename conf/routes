@@ -11,7 +11,13 @@ POST    /exo/:id       				controllers.Application.answer(id: Long)
 GET 	/exo/:id		  			controllers.Application.show(id: Long)
 
 
-GET     /candidates                 controllers.Application.candidate
+GET     /candidate/list             controllers.CandidateForm.candidates
+GET 	/candidate/createform 		controllers.CandidateForm.createForm
+POST	/candidate/create	 		controllers.CandidateForm.create
+
+
+GET     /exam/:id                 controllers.Application.exam(id: Long)
+
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

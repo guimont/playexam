@@ -1,0 +1,29 @@
+@(candidates: Seq[Candidate],exams: Seq[Exam])
+
+@main {
+<table>
+  <dl>
+  <table>
+    <tr>
+      <th>first name</th>
+      <th>last name</th>
+      <th>date</th>
+      <td>candidate.id</td>
+      <th>exam id</th>
+      
+
+    </tr>
+  @for(candidate <- candidates) {
+      <td>@candidate.firstname</td>
+      <td>@candidate.lastname</td>
+      <td>@candidate.date</td>
+      <td>@candidate.id</td>
+      @for(exam <- exams) {
+      <td>@exam.id</td>
+        @if(exam.cid.equals(candidate.id)) {
+          <td>@exam.id</td>
+        }
+      }
+    </tr> }
+  </table>
+}

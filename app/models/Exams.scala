@@ -6,7 +6,6 @@ import play.api.Play.current
 import play.api.Logger
 
 import scala.concurrent.duration._
-import java.util._
 import java.sql.Timestamp
 import org.joda.time.DateTime
 /**
@@ -15,7 +14,7 @@ import org.joda.time.DateTime
 case class Exam(
   id: Option [Long],
   cid: Long,
-  date: DateTime,
+  date: String,
   note: Int)
 
 
@@ -25,13 +24,13 @@ case class Exam(
 object Exams extends Table[Exam]("exams") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def cid = column[Long]("cid")
-  def date = column[DateTime]("datecrea")
+  def date = column[String]("datecrea")
   def note = column[Int]("note")
   
 
-  implicit val dateTime: TypeMapper[DateTime]
+  /*implicit val dateTime: TypeMapper[DateTime]
   = MappedTypeMapper.base[DateTime, Timestamp](dt => new
-      Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))
+      Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))*/
 
   def * = id.? ~ cid ~ date ~ note <> (Exam, Exam.unapply _)
   def autoInc = id.?  ~ cid ~ date ~ note <> (Exam, Exam.unapply _) returning id
@@ -65,6 +64,11 @@ object Exams extends Table[Exam]("exams") {
     Query(Exams).filter(_.id === id).list.headOption
   }
 
+
+
+  def findAll(): List[Exam] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Exams).sortBy(_.id).list
+  }
 
   
   /**

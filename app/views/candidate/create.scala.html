@@ -1,0 +1,26 @@
+@(candidateForm: Form[models.CandidateFootprint])
+
+@import views.html.helper.bootstrap._
+@main {
+    <div class="container">
+
+      <h2>Add Product</h2>
+      @helper.form(action = routes.CandidateForm.create) {
+          
+          @candidateForm.globalError.map { error =>
+            <span class="error">@error.message</span>
+            }
+          
+          
+          @helper.inputText(candidateForm("firstname"), '_class -> "important", 'size -> 40)
+          
+          @helper.inputText(candidateForm("lastname"))
+          @helper.inputText(candidateForm("date"))
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create candidate</button>
+          </div>
+      }
+
+    </div>
+  }

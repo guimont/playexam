@@ -4,45 +4,43 @@ import play.api.db.slick.Config.driver.simple._
 import scala.slick.lifted.Query
 import play.api.Play.current
 import play.api.Logger
-
-import scala.concurrent.duration._
-import java.util._
-import java.sql.Timestamp
-import org.joda.time.DateTime
 /**
  * Question domain model.
  */
 case class Candidate(
   id: Option [Long],
-  examId: Option [Long],
   /*date: DateTime,*/
   date: String,
   firstname: String,
   lastname: String)
 
+case class CandidateFootprint(
+  firstname: String,
+  lastname: String,
+  date: String)
+  
 
 /**
  * Slick database mapping.
  */
 object Candidates extends Table[Candidate]("candidates") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  def examId = column[Long]("examId")
   /*def date = column[DateTime]("datecrea")*/
   def date = column[String]("datecrea")
   def firstname = column[String]("firstname")
   def lastname = column[String]("lastname")
 
 
-  implicit val dateTime: TypeMapper[DateTime]
+  /*implicit val dateTime: TypeMapper[DateTime]
   = MappedTypeMapper.base[DateTime, Timestamp](dt => new
-      Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))
+      Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))*/
 
-  def * = id.? ~ examId.? ~ date ~ firstname ~ lastname<> (Candidate, Candidate.unapply _)
-  def autoInc = id.?  ~ examId.? ~ date ~ firstname ~ lastname  <> (Candidate, Candidate.unapply _) returning id
+  def * = id.? ~ date ~ firstname ~ lastname<> (Candidate, Candidate.unapply _)
+  def autoInc = id.?  ~ date ~ firstname ~ lastname  <> (Candidate, Candidate.unapply _) returning id
 
-  def forInsert =  examId.? ~ date ~ firstname ~ lastname <> (
-    t => Candidate(None, t._1, t._2, t._3, t._4),
-    (p: Candidate) => Some(( p.examId, p.date, p.firstname, p.lastname)))
+  def forInsert =  date ~ firstname ~ lastname <> (
+    t => Candidate(None, t._1, t._2, t._3),
+    (p: Candidate) => Some(( p.date, p.firstname, p.lastname)))
 
 
   def reset() {
@@ -63,6 +61,7 @@ object Candidates extends Table[Candidate]("candidates") {
     Query(Candidates).sortBy(_.id).list
   }
 
+
   /**
    * Deletes a product.
    */
@@ -77,20 +76,12 @@ object Candidates extends Table[Candidate]("candidates") {
   }
 
 
-  
-  /**
-   * Returns all products sorted by EAN code.
-   */
-  def findAllbyexamId(examId: Long): Option[Candidate] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Candidates).filter(_.examId === examId).list.headOption
-  }
-
   /**
    * Inserts the given product.
    */
-  def insert(question: Candidate) {
+  def insert(candidate: CandidateFootprint) {
     play.api.db.slick.DB.withSession { implicit session =>
-      Candidates.forInsert.insert(question)
+      Candidates.forInsert.insert(Candidate(None,candidate.date,candidate.firstname,candidate.lastname))
     }
   }
 
