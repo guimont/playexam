@@ -8,22 +8,31 @@
       <th>first name</th>
       <th>last name</th>
       <th>date</th>
-      <td>candidate.id</td>
       <th>exam id</th>
       
 
     </tr>
-  @for(candidate <- candidates) {
+  @candidates.map { candidate =>
       <td>@candidate.firstname</td>
       <td>@candidate.lastname</td>
       <td>@candidate.date</td>
-      <td>@candidate.id</td>
-      @for(exam <- exams) {
-      <td>@exam.id</td>
-        @if(exam.cid.equals(candidate.id)) {
-          <td>@exam.id</td>
+      @exams.map { exam => 
+        @if(candidate.id.getOrElse(0) == (exam.cid)) {
+          <td href="@controllers.routes.ExamForm.exam(exam.id.getOrElse(0))">@exam.id</td>
+        }
+        @if(candidate.id.getOrElse(0) != (exam.cid)){
+         <td>
+        <a href="@controllers.routes.ExamForm.createForm(candidate.id.getOrElse(0))" class="btn btn-mini">Create exam</a>
+      </td>
+
         }
       }
-    </tr> }
+
+       
+      
+    </tr> 
+  }
   </table>
+
+  <a href="@controllers.routes.CandidateForm.createForm" class="btn btn-mini">Create candidate</a>
 }

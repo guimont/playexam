@@ -33,4 +33,6 @@ object CandidateForm extends Controller {
   def candidates = Action { implicit request =>
     Ok(views.html.candidate.candidate(Candidates.findAll, Exams.findAll))
   }
+
+  
 }
