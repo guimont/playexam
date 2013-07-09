@@ -15,8 +15,11 @@ case class Exam(
   id: Option [Long],
   cid: Long,
   date: String,
+  notifier_1: String,
   note: Int)
 
+case class ExamFootprint(
+  notifier_1: String)
 
 /**
  * Slick database mapping.
@@ -25,6 +28,7 @@ object Exams extends Table[Exam]("exams") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def cid = column[Long]("cid")
   def date = column[String]("datecrea")
+  def notifier_1 = column[String]("notifier")
   def note = column[Int]("note")
   
 
@@ -32,12 +36,12 @@ object Exams extends Table[Exam]("exams") {
   = MappedTypeMapper.base[DateTime, Timestamp](dt => new
       Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))*/
 
-  def * = id.? ~ cid ~ date ~ note <> (Exam, Exam.unapply _)
-  def autoInc = id.?  ~ cid ~ date ~ note <> (Exam, Exam.unapply _) returning id
+  def * = id.? ~ cid ~ date ~ notifier_1 ~ note <> (Exam, Exam.unapply _)
+  def autoInc = id.?  ~ cid ~ date ~ notifier_1 ~ note <> (Exam, Exam.unapply _) returning id
 
-  def forInsert =  cid ~ date ~ note  <> (
-    t => Exam(None, t._1, t._2, t._3),
-    (p: Exam) => Some(( p.cid, p.date, p.note)))
+  def forInsert =  cid ~ date ~ notifier_1 ~ note  <> (
+    t => Exam(None, t._1, t._2, t._3, t._4),
+    (p: Exam) => Some(( p.cid, p.date, p.notifier_1, p.note)))
 
 
   def reset() {
@@ -78,12 +82,10 @@ object Exams extends Table[Exam]("exams") {
     Query(Exams).filter(_.cid === cid).list.headOption
   }
 
-  /**
-   * Inserts the given product.
-   */
-  def insert(question: Exam) {
+ 
+   def insert(cid: Long, exam: ExamFootprint) {
     play.api.db.slick.DB.withSession { implicit session =>
-      Exams.forInsert.insert(question)
+      Exams.forInsert.insert(Exam(None,cid,"2012",exam.notifier_1,0))
     }
   }
 

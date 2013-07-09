@@ -1,0 +1,23 @@
+@(id: Long, examForm: Form[models.ExamFootprint])
+@import play.api.templates.Html
+@import views.html.helper.bootstrap._
+@main {
+    <div class="container">
+
+      <h2>Create examan for candidate ID #@id</h2>
+      @helper.form(action = routes.ExamForm.create(id)) {
+          
+          @examForm.globalError.map { error =>
+            <span class="error">@error.message</span>
+            }
+          
+          
+          @helper.inputText(examForm("Notifier"))
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Create exam</button>
+          </div>
+      }
+
+    </div>
+  }

@@ -12,7 +12,6 @@
   import models.{CResult,CResults}
   import models.{Candidate,Candidates}
 
-  /*https://code.google.com/p/yogamamadvd/source/browse/branches/play2/main/app/models/Cart.scala?r=188*/
   case class Index(name:String,res:List[Boolean])
 
   object Application extends Controller {

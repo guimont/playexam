@@ -24,13 +24,14 @@ object CandidateForm extends Controller {
       formWithErrors => Ok(views.html.candidate.create(formWithErrors)),
       success = { newCandidate =>
       	Candidates.insert(newCandidate)
-      	Ok(views.html.candidate.candidate(Candidates.findAll, Exams.findAll))
+      	Redirect(routes.CandidateForm.candidates)
       }
     )
   }
 
 
   def candidates = Action { implicit request =>
+
     Ok(views.html.candidate.candidate(Candidates.findAll, Exams.findAll))
   }
 

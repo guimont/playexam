@@ -17,6 +17,7 @@ POST	/candidate/create	 		controllers.CandidateForm.create
 
 GET     /exam/:id                 	controllers.ExamForm.exam(id: Long)
 GET     /exam/createform/:id        controllers.ExamForm.createForm(id: Long)
+POST	/exam/create/:id   			controllers.ExamForm.create(id: Long)
 
 
 # Map static resources from the /public folder to the /assets URL path
