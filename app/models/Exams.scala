@@ -64,8 +64,8 @@ object Exams extends Table[Exam]("exams") {
     }
   }
 
-  def find(id: Long): Option[Exam] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Exams).filter(_.id === id).list.headOption
+  def find(id: Long): Exam = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Exams).filter(_.id === id).list.head
   }
 
 
@@ -78,8 +78,8 @@ object Exams extends Table[Exam]("exams") {
   /**
    * Returns all products sorted by EAN code.
    */
-  def findAllbyCId(cid: Long): Option[Exam] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Exams).filter(_.cid === cid).list.headOption
+  def findAllbyCId(cid: Long): Exam = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Exams).filter(_.cid === cid).list.head
   }
 
  

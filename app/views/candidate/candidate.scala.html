@@ -1,4 +1,4 @@
-@(candidates: Seq[Candidate],exams: Seq[Exam])
+@(candidates: Seq[CandidateExam])
 
 @main {
 <table>
@@ -13,28 +13,25 @@
 
     </tr>
   @candidates.map { candidate =>
+  <tr>
       <td>@candidate.firstname</td>
       <td>@candidate.lastname</td>
       <td>@candidate.date</td>
-      @defining(_:Int) { work => 
-      @exams.map { exam => 
-        @if(candidate.id.getOrElse(0) == (exam.cid)) {
-        @work = 1
-          <td><a href="@controllers.routes.ExamForm.exam(exam.id.getOrElse(0))" class="btn btn-success btn-mini">View exam</a></td>
-        }
-      }
+      @if(candidate.examid.getOrElse(0) != 0) {
+      <td><a href="@controllers.routes.ExamForm.exam(candidate.examid.getOrElse(0))" class="btn btn-success btn-mini">View exam</a></td>
+      } else {
        
-      </td>
-       @if(work != 0){
+ 
+
          <td>
-        <a href="@controllers.routes.ExamForm.createForm(candidate.id.getOrElse(0))" class="btn btn btn-warning btn-mini">Create exam</a>
-       
-      }
+        <a href="@controllers.routes.ExamForm.createForm(candidate.id)" class="btn btn btn-warning btn-mini">Create exam</a>
+        }
+    </tr> 
     }
        
       
-    </tr> 
-  }
+
+
   </table>
 
   <a href="@controllers.routes.CandidateForm.createForm" class="btn btn-primary btn-mini">Create candidate</a>

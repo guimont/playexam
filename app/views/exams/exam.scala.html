@@ -1,0 +1,28 @@
+@(exam: Exam)
+
+@main {
+<table>
+  <dl>
+  <table>
+    <tr>
+      <th>candidat id</th>
+      <th>notifier</th>
+      <th>date</th>
+      <th>note</th>
+     <tr>
+
+  <tr>
+      <td>@exam.cid</td>
+      <td>@exam.notifier_1</td>
+      <td>@exam.date</td>
+      <td>@exam.note</td>
+  </tr> 
+ 
+       
+      
+
+
+  </table>
+	<a href="@controllers.routes.CandidateForm.candidates" class="btn btn-primary btn-mini">Candidates list</a>
+
+}

@@ -19,6 +19,15 @@ case class CandidateFootprint(
   lastname: String,
   date: String)
   
+case class CandidateExam (
+  id: Long,
+  examid: Option[Long],
+  date: String,
+  firstname: String,
+  lastname: String
+
+  )
+
 
 /**
  * Slick database mapping.

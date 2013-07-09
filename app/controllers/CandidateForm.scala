@@ -6,6 +6,7 @@ import play.api.data.Form
 import play.api.data.Forms._
 import models.CandidateFootprint 
 import models.Candidates 
+import models.CandidateExam
 import models.Exams
 
 object CandidateForm extends Controller {
@@ -29,10 +30,25 @@ object CandidateForm extends Controller {
     )
   }
 
+/*pour chaque candidat, parcourir list*/
 
   def candidates = Action { implicit request =>
 
-    Ok(views.html.candidate.candidate(Candidates.findAll, Exams.findAll))
+    var listK : Set[CandidateExam] = Set()
+
+    Candidates.findAll.map{ candidate => 
+      var n : Long = 0
+      Exams.findAll.map{ exam =>
+        if (exam.cid == candidate.id.getOrElse(0)) n = exam.cid 
+        }
+      val e = CandidateExam(candidate.id.getOrElse(0),Option(n),candidate.date, candidate.firstname ,candidate.lastname)
+      listK = listK+ e
+    }
+
+    listK.map(e=> 
+      Logger.info(e.toString))
+
+    Ok(views.html.candidate.candidate(listK.toList))
   }
 
   

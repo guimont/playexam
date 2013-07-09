@@ -14,8 +14,7 @@ object ExamForm extends Controller {
  
   
   def exam (id: Long ) = Action { implicit request =>
-    //Ok(views.html.exam(Exam.findAllbyCId))
-    Ok("exam")
+    Ok(views.html.exams.exam(Exams.findAllbyCId(id)))
   }
 
 
