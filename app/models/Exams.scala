@@ -43,7 +43,7 @@ object Exams extends Table[Exam]("exams") {
 
   def forInsert =  cid ~ token.? ~ date.? ~ notifier_1 ~ note  <> (
     t => Exam(None, t._1, t._2, t._3, t._4, t._5),
-    (p: Exam) => Some(( p.cid, p.date, p.token, p.notifier_1, p.note)))
+    (p: Exam) => Some(( p.cid, p.token, p.date, p.notifier_1, p.note)))
 
 
   def reset() {
@@ -84,14 +84,21 @@ object Exams extends Table[Exam]("exams") {
     Query(Exams).filter(_.cid === cid).list.head
   }
 
+  /**
+   * Returns all products sorted by EAN code.
+   */
+  def findAllbyToken(token: String): Exam = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Exams).filter(_.token === token).list.head
+  }
+
   /*def generateToken() : String {
     return "AAAAA"
   }*/
- 
+ import java.util.UUID;
   def insert(cid: Long, exam: ExamFootprint) {
       play.api.db.slick.DB.withSession { implicit session =>
 
-      Exams.forInsert.insert(Exam(None,cid,None,None,exam.notifier_1,0))
+      Exams.forInsert.insert(Exam(None,cid,Option(UUID.randomUUID().toString()),None,exam.notifier_1,0))
     }
   }
 

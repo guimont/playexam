@@ -52,7 +52,7 @@
 
 
     val startFootprint = Form(mapping(
-    "startid" -> longNumber)(StartFootprint.apply)(StartFootprint.unapply))
+    "startid" -> nonEmptyText)(StartFootprint.apply)(StartFootprint.unapply))
     
     def startForm = Action {
       Ok(views.html.index(startFootprint))
@@ -61,10 +61,19 @@
 
     
 
-    def start = Action {
-      Redirect(routes.Application.show(1))/*.withSession(
-      "SessionID" -> id.toString
-    )*/
+    def start = Action { implicit request =>
+       startFootprint.bindFromRequest.fold(
+      formWithErrors => {
+        Logger.info(formWithErrors.toString)
+        Ok(views.html.index(formWithErrors))},
+      success = { token =>
+          Logger.info("token.token"); 
+          Redirect(routes.Application.show(1)).withSession(
+          "SessionID" -> token.startid
+          )
+      }
+    )
+  
 
     }
 
