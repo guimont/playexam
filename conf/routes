@@ -3,9 +3,9 @@
 # ~~~~
 
 # Home page
-GET		/start/:id					controllers.Application.start(id: Long) 
-GET     /                           controllers.Application.index
-GET 	/reset   					controllers.Application.resetData
+GET     /index                      controllers.Application.startForm
+GET     /                           controllers.Application.startForm
+POST	/start  					controllers.Application.start
 
 POST    /exo/:id       				controllers.Application.answer(id: Long) 
 GET 	/exo/:id		  			controllers.Application.show(id: Long)

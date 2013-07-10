@@ -11,31 +11,22 @@
   import models.{Answer,Answers}
   import models.{CResult,CResults}
   import models.{Candidate,Candidates}
+  import models.StartFootprint
 
   case class Index(name:String,res:List[Boolean])
 
   object Application extends Controller {
     
-     def index = Action { request =>
+     /*def index = Action { request =>
       request.session.get("SessionID").map { Sid =>
       Ok(views.html.index(Questions.findAll))
     }.getOrElse {
       Unauthorized("Oops, you are not connected")
     }
       
-    }
+    }*/
 
-    /**
-     * Resets the database, so that there is data to display.
-     */
-    def resetData = Action {
-
-      Questions.reset()
-      Answers.reset()
-
-      // TODO: replace ID values with generated sequence.
-      Redirect(routes.Application.index)
-    }
+   
 
   	def show(id: Long) = Action { implicit session =>
         Questions.find(id).map { question =>
@@ -59,10 +50,21 @@
       Redirect(routes.Application.show(next))
     }
 
-    def start(id: Long ) = Action {
-      Redirect(routes.Application.index).withSession(
+
+    val startFootprint = Form(mapping(
+    "startid" -> longNumber)(StartFootprint.apply)(StartFootprint.unapply))
+    
+    def startForm = Action {
+      Ok(views.html.index(startFootprint))
+    }
+
+
+    
+
+    def start = Action {
+      Redirect(routes.Application.show(1))/*.withSession(
       "SessionID" -> id.toString
-    )
+    )*/
 
     }
 

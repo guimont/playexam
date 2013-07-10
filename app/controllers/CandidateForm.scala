@@ -41,8 +41,7 @@ object CandidateForm extends Controller {
       Exams.findAll.map{ exam =>
         if (exam.cid == candidate.id.getOrElse(0)) n = exam.cid 
         }
-      val e = CandidateExam(candidate.id.getOrElse(0),Option(n),candidate.date, candidate.firstname ,candidate.lastname)
-      listK = listK+ e
+      listK = listK+ CandidateExam(candidate.id.getOrElse(0),Option(n),candidate.date, candidate.firstname ,candidate.lastname)
     }
 
     listK.map(e=> 

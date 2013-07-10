@@ -14,7 +14,8 @@ import org.joda.time.DateTime
 case class Exam(
   id: Option [Long],
   cid: Long,
-  date: String,
+  token: Option[String],
+  date: Option[String],
   notifier_1: String,
   note: Int)
 
@@ -27,6 +28,7 @@ case class ExamFootprint(
 object Exams extends Table[Exam]("exams") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def cid = column[Long]("cid")
+  def token = column[String]("token")
   def date = column[String]("datecrea")
   def notifier_1 = column[String]("notifier")
   def note = column[Int]("note")
@@ -36,12 +38,12 @@ object Exams extends Table[Exam]("exams") {
   = MappedTypeMapper.base[DateTime, Timestamp](dt => new
       Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))*/
 
-  def * = id.? ~ cid ~ date ~ notifier_1 ~ note <> (Exam, Exam.unapply _)
-  def autoInc = id.?  ~ cid ~ date ~ notifier_1 ~ note <> (Exam, Exam.unapply _) returning id
+  def * = id.? ~ cid ~ token.? ~ date.? ~ notifier_1 ~ note <> (Exam, Exam.unapply _)
+  def autoInc = id.?  ~ cid ~ token.? ~ date.? ~ notifier_1 ~ note <> (Exam, Exam.unapply _) returning id
 
-  def forInsert =  cid ~ date ~ notifier_1 ~ note  <> (
-    t => Exam(None, t._1, t._2, t._3, t._4),
-    (p: Exam) => Some(( p.cid, p.date, p.notifier_1, p.note)))
+  def forInsert =  cid ~ token.? ~ date.? ~ notifier_1 ~ note  <> (
+    t => Exam(None, t._1, t._2, t._3, t._4, t._5),
+    (p: Exam) => Some(( p.cid, p.date, p.token, p.notifier_1, p.note)))
 
 
   def reset() {
@@ -82,19 +84,23 @@ object Exams extends Table[Exam]("exams") {
     Query(Exams).filter(_.cid === cid).list.head
   }
 
+  /*def generateToken() : String {
+    return "AAAAA"
+  }*/
  
-   def insert(cid: Long, exam: ExamFootprint) {
-    play.api.db.slick.DB.withSession { implicit session =>
-      Exams.forInsert.insert(Exam(None,cid,"2012",exam.notifier_1,0))
+  def insert(cid: Long, exam: ExamFootprint) {
+      play.api.db.slick.DB.withSession { implicit session =>
+
+      Exams.forInsert.insert(Exam(None,cid,None,None,exam.notifier_1,0))
     }
   }
 
   /**
    * Updates the given product.
    */
-  def update(id: Long, question: Exam) {
+  def update(id: Long, exam: Exam) {
     play.api.db.slick.DB.withSession { implicit session =>
-      Exams.where(_.id === id).update(question)
+      Exams.where(_.id === id).update(exam)
     }
   }
 

@@ -1,21 +1,24 @@
-@(questions: List[models.Question])
 
+@(startForm: Form[models.StartFootprint])
+
+@import views.html.helper.bootstrap._
 @main {
-  
-  <p><a class="btn btn-primary" href="@routes.Application.resetData()">Reset database</a></p>
+    <div class="container">
 
-  <table>
-    <tr>
-      <th>ID</th>
-      <th>Name</th>
-      <th>Description</th>
-    </tr>
-    @for(question <- questions) {
-      <tr>
-        <td>@question.id</td>
-        <td>@question.name</td>
-        <td>@question.description</td>
-      </tr>
-    }
-  </table>
-}
+      <h2>Start examan. Good luck</h2>
+      @helper.form(action = routes.Application.start) {
+          
+          @startForm.globalError.map { error =>
+            <span class="error">@error.message</span>
+            }
+          
+          
+          @helper.inputText(startForm("ID"))
+          
+          <div class="form-actions">
+            <button type="submit" class="btn btn-primary">START</button>
+          </div>
+      }
+
+    </div>
+  }

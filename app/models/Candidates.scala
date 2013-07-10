@@ -4,6 +4,8 @@ import play.api.db.slick.Config.driver.simple._
 import scala.slick.lifted.Query
 import play.api.Play.current
 import play.api.Logger
+
+import scala.concurrent.duration._
 /**
  * Question domain model.
  */
@@ -88,9 +90,12 @@ object Candidates extends Table[Candidate]("candidates") {
   /**
    * Inserts the given product.
    */
+  import java.util._
+  import java.text._
   def insert(candidate: CandidateFootprint) {
+
     play.api.db.slick.DB.withSession { implicit session =>
-      Candidates.forInsert.insert(Candidate(None,candidate.date,candidate.firstname,candidate.lastname))
+      Candidates.forInsert.insert(Candidate(None,new SimpleDateFormat("yyyy-MM-dd").format(new Date),candidate.firstname,candidate.lastname))
     }
   }
 
