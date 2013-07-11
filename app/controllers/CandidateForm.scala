@@ -38,9 +38,8 @@ object CandidateForm extends Controller {
 
     Candidates.findAll.map{ candidate => 
       var n : Long = 0
-      Exams.findAll.map{ exam =>
-        if (exam.cid == candidate.id.getOrElse(0)) n = exam.cid 
-        }
+      Exams.findAll.map { exam =>
+        if (exam.cid == candidate.id.getOrElse(0)) n = exam.cid }
       listK = listK+ CandidateExam(candidate.id.getOrElse(0),Option(n),candidate.date, candidate.firstname ,candidate.lastname)
     }
 

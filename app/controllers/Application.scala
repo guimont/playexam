@@ -12,6 +12,7 @@
   import models.{CResult,CResults}
   import models.{Candidate,Candidates}
   import models.StartFootprint
+  import models.Exams
 
   case class Index(name:String,res:List[Boolean])
 
@@ -28,12 +29,12 @@
 
    
 
-  	def show(id: Long) = Action { implicit session =>
+  	def show(id: Long) = Action { implicit request =>
+      request.session.get("SessionID").map { Sid => 
         Questions.find(id).map { question =>
-
           Ok(views.html.details(id,question,Parts.findAllbyQId(id), Answers.findAllbyQId(id)))
-        }.getOrElse(NotFound)
-      
+        }.getOrElse(Unauthorized("Oops, you are not connected"))
+      }.getOrElse(Unauthorized("Oops, you are not connected"))
     }
 
 
@@ -59,18 +60,19 @@
     }
 
 
-    
-
     def start = Action { implicit request =>
        startFootprint.bindFromRequest.fold(
       formWithErrors => {
         Logger.info(formWithErrors.toString)
         Ok(views.html.index(formWithErrors))},
       success = { token =>
-          Logger.info("token.token"); 
-          Redirect(routes.Application.show(1)).withSession(
-          "SessionID" -> token.startid
-          )
+          Logger.info(token.startid); 
+          Exams.findbyToken(token.startid).map {
+            exam => {
+              Redirect(routes.Application.show(1)).withSession(
+              "SessionID" -> exam.id.getOrElse(0).toString)
+            }
+          } getOrElse Ok(views.html.index(startFootprint))
       }
     )
   

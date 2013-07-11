@@ -32,7 +32,7 @@ object ExamForm extends Controller {
         Logger.info(formWithErrors.toString)
         Ok(views.html.exams.create(id,formWithErrors))},
       success = { newExam =>
-          Logger.info("create exam"); 
+        Logger.info("create exam"); 
       	Exams.insert(id,newExam)
       	Redirect(routes.CandidateForm.candidates)
       }

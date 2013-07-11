@@ -20,7 +20,7 @@ case class CResult(
  */
 object CResults extends Table[CResult]("results") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  def qid = column[Long]("qid")
+  def qid = column[Long]("qId")
   def eid = column[Long]("eid")
   def response = column[String]("response")
   def * = id.? ~ qid ~ eid ~  response <> (CResult, CResult.unapply _)

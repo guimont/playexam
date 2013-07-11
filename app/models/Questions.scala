@@ -9,7 +9,7 @@ import play.api.Logger
  */
 case class Question(
   id: Option [Long],
-  name: String,
+  tid: Long,
   description: String)
 
 
@@ -18,14 +18,14 @@ case class Question(
  */
 object Questions extends Table[Question]("questions") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  def name = column[String]("name")
+  def tid = column[Long]("tid")
   def description = column[String]("description")
-  def * = id.? ~ name ~ description <> (Question, Question.unapply _)
-  def autoInc = id.?  ~ name ~ description  <> (Question, Question.unapply _) returning id
+  def * = id.? ~ tid ~ description <> (Question, Question.unapply _)
+  def autoInc = id.?  ~ tid ~ description  <> (Question, Question.unapply _) returning id
 
-  def forInsert =  name ~ description <> (
+  def forInsert =  tid ~ description <> (
     t => Question(None, t._1, t._2),
-    (p: Question) => Some(( p.name, p.description)))
+    (p: Question) => Some(( p.tid, p.description)))
 
 
   def reset() {

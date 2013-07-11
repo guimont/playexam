@@ -87,8 +87,8 @@ object Exams extends Table[Exam]("exams") {
   /**
    * Returns all products sorted by EAN code.
    */
-  def findAllbyToken(token: String): Exam = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Exams).filter(_.token === token).list.head
+  def findbyToken(token: String): Option[Exam] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Exams).filter(_.token === token).firstOption
   }
 
   /*def generateToken() : String {
