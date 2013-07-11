@@ -14,13 +14,15 @@ import org.joda.time.DateTime
 case class Exam(
   id: Option [Long],
   cid: Long,
+  tid: Long,
   token: Option[String],
   date: Option[String],
   notifier_1: String,
   note: Int)
 
 case class ExamFootprint(
-  notifier_1: String)
+  notifier_1: String,
+  tid: Long)
 
 /**
  * Slick database mapping.
@@ -28,6 +30,7 @@ case class ExamFootprint(
 object Exams extends Table[Exam]("exams") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def cid = column[Long]("cid")
+  def tid = column[Long]("tid")
   def token = column[String]("token")
   def date = column[String]("datecrea")
   def notifier_1 = column[String]("notifier")
@@ -38,12 +41,12 @@ object Exams extends Table[Exam]("exams") {
   = MappedTypeMapper.base[DateTime, Timestamp](dt => new
       Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))*/
 
-  def * = id.? ~ cid ~ token.? ~ date.? ~ notifier_1 ~ note <> (Exam, Exam.unapply _)
-  def autoInc = id.?  ~ cid ~ token.? ~ date.? ~ notifier_1 ~ note <> (Exam, Exam.unapply _) returning id
+  def * = id.? ~ cid ~ tid ~ token.? ~ date.? ~ notifier_1 ~ note <> (Exam, Exam.unapply _)
+  def autoInc = id.?  ~ cid ~ tid ~ token.? ~ date.? ~ notifier_1 ~ note <> (Exam, Exam.unapply _) returning id
 
-  def forInsert =  cid ~ token.? ~ date.? ~ notifier_1 ~ note  <> (
-    t => Exam(None, t._1, t._2, t._3, t._4, t._5),
-    (p: Exam) => Some(( p.cid, p.token, p.date, p.notifier_1, p.note)))
+  def forInsert =  cid ~ tid ~ token.? ~ date.? ~ notifier_1 ~ note  <> (
+    t => Exam(None, t._1, t._2, t._3, t._4, t._5,t._6),
+    (p: Exam) => Some(( p.cid, p.tid, p.token, p.date, p.notifier_1, p.note)))
 
 
   def reset() {
@@ -98,7 +101,7 @@ object Exams extends Table[Exam]("exams") {
   def insert(cid: Long, exam: ExamFootprint) {
       play.api.db.slick.DB.withSession { implicit session =>
 
-      Exams.forInsert.insert(Exam(None,cid,Option(UUID.randomUUID().toString()),None,exam.notifier_1,0))
+      Exams.forInsert.insert(Exam(None,cid,exam.tid,Option(UUID.randomUUID().toString()),None,exam.notifier_1,0))
     }
   }
 

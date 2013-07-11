@@ -4,7 +4,7 @@
 
 # Home page
 GET     /index                      controllers.Application.startForm
-GET     /                           controllers.Application.startForm
+GET     /:token                     controllers.Application.startFormToken(token: String)
 POST	/start  					controllers.Application.start
 
 POST    /exo/:id       				controllers.Application.answer(id: Long) 

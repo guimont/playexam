@@ -2,7 +2,7 @@
 
 # --- !Ups
 
-insert into "tests" values (1,'Java france',3,30)
+insert into "tests" values (1,'Java france',3,30);
 
 insert into "questions" values (1, 1, '1.	Which declaration of the main method below would allow a class to be started as a standalone program. Select the one correct answer.');
 insert into "answers" values (1, 1, 'A.	public static int main(char args[]',true);

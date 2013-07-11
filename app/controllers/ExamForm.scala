@@ -19,7 +19,8 @@ object ExamForm extends Controller {
 
 
   val examFootprint = Form(mapping(
-    "Notifier" -> text) (ExamFootprint.apply)(ExamFootprint.unapply))
+    "Notifier" -> text,
+    "tid" -> longNumber) (ExamFootprint.apply)(ExamFootprint.unapply))
 
   def createForm(id: Long) = Action {
     Ok(views.html.exams.create(id,examFootprint))

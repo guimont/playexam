@@ -40,8 +40,8 @@ object Tests extends Table[Test]("tests") {
     }
   }
 
-  def find(id: Long): Option[Test] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Tests).filter(_.id === id).list.headOption
+  def find(id: Long): Test = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Tests).filter(_.id === id).list.head
   }
 
 
