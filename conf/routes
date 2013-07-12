@@ -3,12 +3,13 @@
 # ~~~~
 
 # Home page
+GET 	/							controllers.Application.startForm
 GET     /index                      controllers.Application.startForm
-GET     /:token                     controllers.Application.startFormToken(token: String)
 POST	/start  					controllers.Application.start
 
-POST    /exo/:id       				controllers.Application.answer(id: Long) 
-GET 	/exo/:id		  			controllers.Application.show(id: Long)
+POST    /exo/:id       				controllers.Test.answer(id: Long) 
+GET 	/exo/:id		  			controllers.Test.show(id: Long)
+GET		/end						controllers.Test.end
 
 GET     /candidate/list             controllers.CandidateForm.candidates
 GET 	/candidate/createform 		controllers.CandidateForm.createForm
@@ -18,6 +19,9 @@ POST	/candidate/create	 		controllers.CandidateForm.create
 GET     /exam/:id                 	controllers.ExamForm.exam(id: Long)
 GET     /exam/createform/:id        controllers.ExamForm.createForm(id: Long)
 POST	/exam/create/:id   			controllers.ExamForm.create(id: Long)
+GET     /exam/launch/:id            controllers.ExamForm.launch(id: Long)
+
+GET     /:token                     controllers.Application.startFormToken(token: String)
 
 
 # Map static resources from the /public folder to the /assets URL path

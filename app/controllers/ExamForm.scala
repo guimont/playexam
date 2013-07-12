@@ -35,9 +35,16 @@ object ExamForm extends Controller {
       success = { newExam =>
         Logger.info("create exam"); 
       	Exams.insert(id,newExam)
-      	Redirect(routes.CandidateForm.candidates)
+      	Redirect(routes.ExamForm.launch(id))
       }
     )
+  }
+
+
+  def launch(id: Long) = Action { implicit request =>   
+    Exams.find(id).token.map { token=>
+      Ok(views.html.exams.launch( token)) 
+    } .getOrElse(Redirect(routes.CandidateForm.candidates)) 
   }
 
 }

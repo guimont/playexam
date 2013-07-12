@@ -1,0 +1,20 @@
+@(token: String)
+
+@main {
+
+  <dl>
+  
+    <tr>
+      <th>token</th>
+    </tr>
+    <td>
+      <a href="@controllers.routes.Application.startFormToken(token)">@token</a></td>
+     
+    </dl>
+
+      
+
+
+
+	<a href="@controllers.routes.CandidateForm.candidates" class="btn btn-primary btn-mini">Candidates list</a>
+}

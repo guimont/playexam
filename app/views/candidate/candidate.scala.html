@@ -9,8 +9,6 @@
       <th>last name</th>
       <th>date</th>
       <th>exam id</th>
-      
-
     </tr>
   @candidates.map { candidate =>
   <tr>
@@ -20,9 +18,6 @@
       @if(candidate.examid.getOrElse(0) != 0) {
       <td><a href="@controllers.routes.ExamForm.exam(candidate.examid.getOrElse(0))" class="btn btn-success btn-mini">View exam</a></td>
       } else {
-       
- 
-
          <td>
         <a href="@controllers.routes.ExamForm.createForm(candidate.id)" class="btn btn btn-warning btn-mini">Create exam</a>
         }

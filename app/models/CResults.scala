@@ -104,7 +104,17 @@ object CResults extends Table[CResult]("results") {
 
 
   def decode(eid: Long,qid: Long, res:String ) {
-    val result = CResult(None, qid,eid, res)
+    Logger.info(res)
+
+    var listK : String = ""
+    val delims = "[( ,-]"
+    val tokens = res.split(delims)
+    tokens.map{e=> 
+      if (e.startsWith("index")) {
+        listK = listK + e + " "
+      }
+    }
+    val result = CResult(None, qid,eid, listK)
     CResults.insert(result)
   }
 }

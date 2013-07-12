@@ -11,7 +11,6 @@ import scala.concurrent.duration._
  */
 case class Candidate(
   id: Option [Long],
-  /*date: DateTime,*/
   date: String,
   firstname: String,
   lastname: String)
@@ -42,10 +41,6 @@ object Candidates extends Table[Candidate]("candidates") {
   def lastname = column[String]("lastname")
 
 
-  /*implicit val dateTime: TypeMapper[DateTime]
-  = MappedTypeMapper.base[DateTime, Timestamp](dt => new
-      Timestamp(dt.getMillis), ts => new DateTime(ts.getTime))*/
-
   def * = id.? ~ date ~ firstname ~ lastname<> (Candidate, Candidate.unapply _)
   def autoInc = id.?  ~ date ~ firstname ~ lastname  <> (Candidate, Candidate.unapply _) returning id
 
@@ -53,17 +48,6 @@ object Candidates extends Table[Candidate]("candidates") {
     t => Candidate(None, t._1, t._2, t._3),
     (p: Candidate) => Some(( p.date, p.firstname, p.lastname)))
 
-
-  def reset() {
-    play.api.db.slick.DB.withSession { implicit session =>
-      // Output database DDL create statements to bootstrap Evolutions file.
-      Logger.info(Candidates.ddl.dropStatements.mkString("/n"))
-      Logger.info(Candidates.ddl.createStatements.mkString("/n"))
-
-      // Delete all rows
-      Query(Candidates).delete
-    }
-  }
 
   /**
    * Returns all products sorted by EAN code.
