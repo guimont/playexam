@@ -10,7 +10,7 @@ insert into "answers" values (2, 1, 'B.	public static void main(String args[])',
 insert into "answers" values (3, 1, 'C.	public static void MAIN(String args[])',true);
 insert into "answers" values (4, 1, 'D.	public static void main(String args)',true);
 insert into "answers" values (5, 1, 'E.	public static void main(char args[])',true);
-
+insert into "responses" values (1,1,1,true,'index2');
 
 
 insert into "questions" values ( 2, 1, '2.	What all gets printed when the following code is compiled and run? Select the three correct answers.');
@@ -33,10 +33,12 @@ insert into "answers" values (11, 2, 'F.	i=1 j=2',true);
 insert into "answers" values (12, 2, 'G.	i=2 j=0',true);
 insert into "answers" values (13, 2, 'H.	i=2 j=1',true);
 insert into "answers" values (14, 2, 'I.	i=2 j=2',true);
+insert into "responses" values (2,2,1,true,'index2 index3 index6');
 
 
 insert into "questions" values ( 3, 1, '3.	write a qsort hanoi programm');
 insert into "answers" values (15, 3, 'A.	empty',false);
+insert into "responses" values (3,3,1,false,' ');
 
 
 insert into "candidates" values(1,'2013-07-03','guillaume','monteilhet');

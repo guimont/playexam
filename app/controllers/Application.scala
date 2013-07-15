@@ -16,10 +16,6 @@
 
   object Application extends Controller {
     
-
-  	
-
-
     val startFootprint = Form(mapping(
     "startid" -> nonEmptyText)(StartFootprint.apply)(StartFootprint.unapply))
     
@@ -49,6 +45,4 @@
       )
     }
 
-    
-
-  }
+}

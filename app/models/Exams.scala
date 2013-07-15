@@ -18,7 +18,7 @@ case class Exam(
   token: Option[String],
   date: Option[String],
   notifier_1: String,
-  note: Int)
+  note: Float)
 
 case class ExamFootprint(
   notifier_1: String,
@@ -34,7 +34,7 @@ object Exams extends Table[Exam]("exams") {
   def token = column[String]("token")
   def date = column[String]("datecrea")
   def notifier_1 = column[String]("notifier")
-  def note = column[Int]("note")
+  def note = column[Float]("note")
   
 
   /*implicit val dateTime: TypeMapper[DateTime]
@@ -48,17 +48,6 @@ object Exams extends Table[Exam]("exams") {
     t => Exam(None, t._1, t._2, t._3, t._4, t._5,t._6),
     (p: Exam) => Some(( p.cid, p.tid, p.token, p.date, p.notifier_1, p.note)))
 
-
-  def reset() {
-    play.api.db.slick.DB.withSession { implicit session =>
-      // Output database DDL create statements to bootstrap Evolutions file.
-      Logger.info(Exams.ddl.dropStatements.mkString("/n"))
-      Logger.info(Exams.ddl.createStatements.mkString("/n"))
-
-      // Delete all rows
-      Query(Exams).delete
-    }
-  }
 
   /**
    * Deletes a product.
@@ -102,6 +91,13 @@ object Exams extends Table[Exam]("exams") {
       play.api.db.slick.DB.withSession { implicit session =>
 
       Exams.forInsert.insert(Exam(None,cid,exam.tid,Option(UUID.randomUUID().toString()),None,exam.notifier_1,0))
+    }
+  }
+
+  def updateNote( e: Exam, note : Float) {
+      play.api.db.slick.DB.withSession { implicit session =>
+        Exams.where(_.id === e.id).update( 
+          Exam(e.id, e.cid, e.tid, e.token, e.date, e.notifier_1, note))
     }
   }
 

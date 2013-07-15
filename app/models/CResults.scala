@@ -74,7 +74,7 @@ object CResults extends Table[CResult]("results") {
    * Returns all products sorted by candidate id .
    */
   def findAllbyEid(eid: Long): List[CResult] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(CResults).filter(_.eid === eid).list
+    Query(CResults).filter(_.eid === eid).sortBy(_.qid).list
   }
 
   /**
