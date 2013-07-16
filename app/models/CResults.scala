@@ -31,17 +31,6 @@ object CResults extends Table[CResult]("results") {
     (p: CResult) => Some(( p.qid, p.eid, p.resp)))
 
 
-  def reset() {
-    play.api.db.slick.DB.withSession { implicit session =>
-      // Output database DDL create statements to bootstrap Evolutions file.
-      Logger.info(CResults.ddl.dropStatements.mkString("/n"))
-      Logger.info(CResults.ddl.createStatements.mkString("/n"))
-
-      // Delete all rows
-      Query(CResults).delete
-    }
-  }
-
   /**
    * Deletes a product.
    */
@@ -103,7 +92,7 @@ object CResults extends Table[CResult]("results") {
   }
 
 
-  def decode(eid: Long,qid: Long, res:String ) {
+  def decode(qid: Long, eid: Long, res:String ) {
     Logger.info(res)
 
     var listK : String = ""

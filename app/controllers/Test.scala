@@ -56,13 +56,11 @@ object Test extends Controller {
       var note = 0
       var nb = 0
 
-      Logger.info(t)
-      Logger.info(c)
       t.split(" ").map{ i=>  
         if (c.indexOf(i)>=0) note = note + 1
         nb = nb + 1
       }
-      Logger.info(note.toString +" "+nb.toString)
+
       note.toFloat/nb.toFloat
     }
 
@@ -71,12 +69,13 @@ object Test extends Controller {
       val e = Exams.find(id)
       var note = e.note
 
-      val listT = TResults.findAllbyTid(e.tid)
-      val listC = CResults.findAllbyEid(id)
-
-      listC.zipAll(listT,"",4).map { n =>
-        note = note + predicate(n.t.resp, n.c.resp)
+      CResults.findAllbyEid(id).zip(TResults.findAllbyTid(e.tid)).map { n =>
+        if(n._2.open == true) {
+          note = note + predicate(n._1.resp, n._2.resp)
+          Exams.updateNote(e,note)
+        }
       }
+
       /*for {t <- listT
           c <- listC
         
