@@ -17,8 +17,7 @@ case class Candidate(
 
 case class CandidateFootprint(
   firstname: String,
-  lastname: String,
-  date: String)
+  lastname: String)
   
 case class CandidateExam (
   id: Long,

@@ -13,8 +13,7 @@ object CandidateForm extends Controller {
   
   val candidateForm = Form(mapping(
     "firstname" -> nonEmptyText,
-    "lastname" -> nonEmptyText,
-    "date" -> nonEmptyText)(CandidateFootprint.apply)(CandidateFootprint.unapply))
+    "lastname" -> nonEmptyText)(CandidateFootprint.apply)(CandidateFootprint.unapply))
 
   def createForm() = Action {
     Ok(views.html.candidate.create(candidateForm))
@@ -28,6 +27,11 @@ object CandidateForm extends Controller {
       	Redirect(routes.CandidateForm.candidates)
       }
     )
+  }
+
+  def delete(id: Long) = Action { implicit request =>
+    Candidates.delete(id)
+    Redirect(routes.CandidateForm.candidates)
   }
 
 /*pour chaque candidat, parcourir list*/

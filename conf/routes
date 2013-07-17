@@ -14,12 +14,14 @@ GET		/end						controllers.Test.end
 GET     /candidate/list             controllers.CandidateForm.candidates
 GET 	/candidate/createform 		controllers.CandidateForm.createForm
 POST	/candidate/create	 		controllers.CandidateForm.create
+GET     /candidate/delete/:id       controllers.CandidateForm.delete(id: Long)
 
 
 GET     /exam/:id                 	controllers.ExamForm.exam(id: Long)
 GET     /exam/createform/:id        controllers.ExamForm.createForm(id: Long)
 POST	/exam/create/:id   			controllers.ExamForm.create(id: Long)
 GET     /exam/launch/:id            controllers.ExamForm.launch(id: Long)
+
 
 GET     /:token                     controllers.Application.startFormToken(token: String)
 
