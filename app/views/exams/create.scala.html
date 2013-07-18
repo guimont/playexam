@@ -1,5 +1,5 @@
-@(id: Long, examForm: Form[models.ExamFootprint])
-
+@(id: Long, examForm: Form[models.ExamFootprint], testNames: Seq[(String, String)])
+@import helper._
 @import views.html.helper.bootstrap._
 @main {
     <div class="container">
@@ -13,7 +13,14 @@
           
           
           @helper.inputText(examForm("Notifier"))
-          @helper.inputText(examForm("tid"))
+         
+
+          @select(
+                examForm("tid"), 
+                testNames, 
+                '_label -> "tid", '_default -> "-- Choose a test --",
+                '_showConstraints -> false
+            )
           
           <div class="form-actions">
             <button type="submit" class="btn btn-primary">Create exam</button>

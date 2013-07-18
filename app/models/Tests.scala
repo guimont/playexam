@@ -13,6 +13,7 @@ case class Test(
   nb_q: Long,
   delay: Long)
 
+case class TestName(id: Long, name: String)
 
 /**
  * Slick database mapping.
@@ -70,4 +71,16 @@ object Tests extends Table[Test]("tests") {
     }
   }
 
+}
+
+
+object TestName {
+  
+  /**
+   * Construct the Map[String,String] needed to fill a select options set.
+   */
+  def options: Seq[(String,String)] = { 
+    Tests.findAll.map(c => c.id.toString -> c.name)
+  }
+  
 }

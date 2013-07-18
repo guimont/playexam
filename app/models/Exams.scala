@@ -111,3 +111,4 @@ object Exams extends Table[Exam]("exams") {
   }
 
 }
+

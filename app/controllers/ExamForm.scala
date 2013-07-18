@@ -7,6 +7,7 @@ import play.api.data.Forms._
 import models.CandidateFootprint 
 import models.Candidates 
 import models.{Exams,ExamFootprint}
+import models.TestName
 
 
 
@@ -23,7 +24,7 @@ object ExamForm extends Controller {
     "tid" -> longNumber) (ExamFootprint.apply)(ExamFootprint.unapply))
 
   def createForm(id: Long) = Action {
-    Ok(views.html.exams.create(id,examFootprint))
+    Ok(views.html.exams.create(id,examFootprint,TestName.options))
   }
 
 
@@ -31,7 +32,7 @@ object ExamForm extends Controller {
     examFootprint.bindFromRequest.fold(
       formWithErrors => {
         Logger.info(formWithErrors.toString)
-        Ok(views.html.exams.create(id,formWithErrors))},
+        Ok(views.html.exams.create(id,formWithErrors,TestName.options))},
       success = { newExam =>
         Logger.info("create exam"); 
       	Exams.insert(id,newExam)
@@ -42,7 +43,7 @@ object ExamForm extends Controller {
 
 
   def launch(id: Long) = Action { implicit request =>   
-    Exams.find(id).token.map { token=>
+    Exams.findAllbyCId(id).token.map { token=>
       Ok(views.html.exams.launch( token)) 
     } .getOrElse(Redirect(routes.CandidateForm.candidates)) 
   }
