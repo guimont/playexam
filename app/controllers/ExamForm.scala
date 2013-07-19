@@ -31,7 +31,6 @@ object ExamForm extends Controller {
   def create(id: Long) = Action { implicit request =>
     examFootprint.bindFromRequest.fold(
       formWithErrors => {
-        Logger.info(formWithErrors.toString)
         Ok(views.html.exams.create(id,formWithErrors,TestName.options))},
       success = { newExam =>
         Logger.info("create exam"); 

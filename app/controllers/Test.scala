@@ -46,21 +46,36 @@ object Test extends Controller {
     def end = Action { implicit request =>
       request.session.get("SessionID").map { Sid =>
         CorrectExam(Sid.toInt)
-      }.getOrElse(Unauthorized("Oops, you are not connected"))    
+      }.getOrElse(Unauthorized("Oops, you are not connected"))   
+      SendMail 
       Ok(views.html.test.end()).withNewSession
     }
 
+    def SendMail = {
+      import com.typesafe.plugin._
+      import play.api.Play.current
+      val mail = use[MailerPlugin].email
+      mail.setSubject("mailer")
+      mail.addRecipient("gmo@orsyp.com")
+      mail.addFrom("gmo@orsyp.com")
+      //sends html
+      mail.sendHtml("<html>html</html>" )
+      //sends text/text
+      mail.send( "text" )
+      //sends both text and html
+      mail.send( "text", "<html>html</html>")
+    }
 
-
-    def predicate(t:String,c:String) : Float = {
+    def predicate(c:String,t:String) : Float = {
       var note = 0
       var nb = 0
 
       t.split(" ").map{ i=>  
+         Logger.info(i)
         if (c.indexOf(i)>=0) note = note + 1
         nb = nb + 1
       }
-
+      Logger.info(note.toFloat + " / " + nb.toFloat +" = " + note.toFloat/nb.toFloat)
       note.toFloat/nb.toFloat
     }
 

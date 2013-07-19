@@ -80,7 +80,7 @@ object TestName {
    * Construct the Map[String,String] needed to fill a select options set.
    */
   def options: Seq[(String,String)] = { 
-    Tests.findAll.map(c => c.id.toString -> c.name)
+    Tests.findAll.map(c => c.id.getOrElse(0).toString -> c.name)
   }
   
 }
