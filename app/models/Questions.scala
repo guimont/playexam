@@ -61,6 +61,13 @@ object Questions extends Table[Question]("questions") {
   }
 
   /**
+   * Returns all questions sorted by id.
+   */
+  def findAllbyTid(tid: Long): List[Question] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Questions).filter(_.tid === tid).sortBy(_.id).list
+  }
+
+  /**
    * Inserts the given product.
    */
   def insert(question: Question) {

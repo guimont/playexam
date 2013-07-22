@@ -8,6 +8,8 @@ import models.CandidateFootprint
 import models.Candidates 
 import models.{Exams,ExamFootprint}
 import models.TestName
+import models.{Question,Questions}
+import models.{CResult,CResults}
 
 
 
@@ -15,7 +17,9 @@ object ExamForm extends Controller {
  
   
   def exam (id: Long ) = Action { implicit request =>
-    Ok(views.html.exams.exam(Exams.findAllbyCId(id)))
+    //questions // cresult
+    val e = Exams.findbyCId(id)
+    Ok(views.html.exams.exam(e, Questions.findAllbyTid(e.tid) , CResults.findAllbyEid(id) ))
   }
 
 
@@ -42,7 +46,7 @@ object ExamForm extends Controller {
 
 
   def launch(id: Long) = Action { implicit request =>   
-    Exams.findAllbyCId(id).token.map { token=>
+    Exams.findbyCId(id).token.map { token=>
       Ok(views.html.exams.launch( token)) 
     } .getOrElse(Redirect(routes.CandidateForm.candidates)) 
   }

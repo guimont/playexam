@@ -1,4 +1,4 @@
-@(exam: Exam)
+@(exam: Exam,questions: Seq[Question],results : Seq[CResult])
 
 @main {
 <table>
@@ -18,9 +18,14 @@
       <td>@exam.note</td>
   </tr> 
  
-       
+ @for((question, result) <- questions.zip(results)) {
+ <tr>
+   <td>@question.description</td>
+      <td>@result.resp</td>   
+</tr> 
+ 
       
-
+} 
 
   </table>
 	<a href="@controllers.routes.CandidateForm.candidates" class="btn btn-primary btn-mini">Candidates list</a>

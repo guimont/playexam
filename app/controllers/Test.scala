@@ -47,7 +47,7 @@ object Test extends Controller {
       request.session.get("SessionID").map { Sid =>
         CorrectExam(Sid.toInt)
       }.getOrElse(Unauthorized("Oops, you are not connected"))   
-      SendMail 
+      //SendMail 
       Ok(views.html.test.end()).withNewSession
     }
 
@@ -58,10 +58,6 @@ object Test extends Controller {
       mail.setSubject("mailer")
       mail.addRecipient("gmo@orsyp.com")
       mail.addFrom("gmo@orsyp.com")
-      //sends html
-      mail.sendHtml("<html>html</html>" )
-      //sends text/text
-      mail.send( "text" )
       //sends both text and html
       mail.send( "text", "<html>html</html>")
     }
@@ -90,19 +86,5 @@ object Test extends Controller {
           Exams.updateNote(e,note)
         }
       }
-
-      /*for {t <- listT
-          c <- listC
-        
-      } yield predicate(t.resp, c.resp)*/
-
-      /*CResults.findAllbyEid(id).map { c => 
-        TResults.findAllbyTid(e.tid).map { t =>
-          if (t.qid == c.qid && t.open == true) {
-            note = note + predicate(t.resp, c.resp)
-            Exams.updateNote(e,note)
-          }
-        }
-      }*/
     }
 }
