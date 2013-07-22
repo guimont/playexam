@@ -100,7 +100,7 @@ object CResults extends Table[CResult]("results") {
     val tokens = res.split(delims)
     tokens.map{e=> 
       if (e.startsWith("index")) {
-        listK = listK + e + " "
+        listK = listK + (e.charAt(5)+16).toChar + " "
       }
     }
     val result = CResult(None, qid,eid, listK)

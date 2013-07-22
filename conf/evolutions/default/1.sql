@@ -62,6 +62,12 @@ create table "exams"  (
 );
 
 
+create table "users"  (
+  "email" VARCHAR(256),
+  "name" VARCHAR(256),
+  "password" VARCHAR(256)
+);
+
 
 # --- !Downs
 

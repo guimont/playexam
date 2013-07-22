@@ -9,17 +9,17 @@ import models.Candidates
 import models.CandidateExam
 import models.Exams
 
-object CandidateForm extends Controller {
+object CandidateForm extends Controller  with Secured {
   
   val candidateForm = Form(mapping(
     "firstname" -> nonEmptyText,
     "lastname" -> nonEmptyText)(CandidateFootprint.apply)(CandidateFootprint.unapply))
 
-  def createForm() = Action {
+  def createForm() = IsAuthenticated { _ => _ =>
     Ok(views.html.candidate.create(candidateForm))
   }
   
-  def create() = Action { implicit request =>
+  def create() = IsAuthenticated { _ => implicit request =>
     candidateForm.bindFromRequest.fold(
       formWithErrors => Ok(views.html.candidate.create(formWithErrors)),
       success = { newCandidate =>
@@ -29,14 +29,14 @@ object CandidateForm extends Controller {
     )
   }
 
-  def delete(id: Long) = Action { implicit request =>
+  def delete(id: Long) = IsAuthenticated { _ => _ =>
     Candidates.delete(id)
     Redirect(routes.CandidateForm.candidates)
   }
 
 /*pour chaque candidat, parcourir list*/
 
-  def candidates = Action { implicit request =>
+  def candidates = IsAuthenticated { _ => _ =>
 
     var listK : Set[CandidateExam] = Set()
 
