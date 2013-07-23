@@ -10,7 +10,8 @@ import play.api.Logger
 case class Question(
   id: Option [Long],
   tid: Long,
-  description: String)
+  description: String,
+  open: Boolean)
 
 
 /**
@@ -20,24 +21,15 @@ object Questions extends Table[Question]("questions") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def tid = column[Long]("tid")
   def description = column[String]("description")
-  def * = id.? ~ tid ~ description <> (Question, Question.unapply _)
-  def autoInc = id.?  ~ tid ~ description  <> (Question, Question.unapply _) returning id
+  def open = column[Boolean]("open")
+  def * = id.? ~ tid ~ description ~ open <> (Question, Question.unapply _)
+  def autoInc = id.?  ~ tid ~ description ~ open <> (Question, Question.unapply _) returning id
 
-  def forInsert =  tid ~ description <> (
-    t => Question(None, t._1, t._2),
-    (p: Question) => Some(( p.tid, p.description)))
+  def forInsert =  tid ~ description ~ open <> (
+    t => Question(None, t._1, t._2, t._3),
+    (p: Question) => Some(( p.tid, p.description, p.open)))
 
 
-  def reset() {
-    play.api.db.slick.DB.withSession { implicit session =>
-      // Output database DDL create statements to bootstrap Evolutions file.
-      Logger.info(Questions.ddl.dropStatements.mkString("/n"))
-      Logger.info(Questions.ddl.createStatements.mkString("/n"))
-
-      // Delete all rows
-      Query(Questions).delete
-    }
-  }
 
   /**
    * Deletes a product.

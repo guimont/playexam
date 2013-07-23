@@ -28,6 +28,13 @@ object Test extends Controller {
     }
 
 
+  def FillAnswer(id: Long, eid: Long, list:List[Answer]) =  { 
+    CResults.findAllbyQEid(id,eid).map ( res =>
+        res.resp.split(" ").map { i =>
+        Logger.info((i.charAt(0)-48).toString)
+      }  
+    )
+  }
     def answer(id: Long) = Action { implicit request =>
      
       Logger.info(request.body.toString); 
@@ -65,8 +72,8 @@ object Test extends Controller {
     def predicate(c:String,t:String) : Float = {
       var note = 0
       var nb = 0
-
-      t.split(" ").map{ i=>  
+ 
+      t.split(" ").map{ i=> 
          Logger.info(i)
         if (c.indexOf(i)>=0) note = note + 1
         nb = nb + 1

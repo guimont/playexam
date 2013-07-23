@@ -21,25 +21,15 @@ object Answers extends Table[Answer]("answers") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
   def qid = column[Long]("qId")
   def response = column[String]("answer")
-  def check = column[Boolean]("check")
-  def * = id.? ~ qid ~ response ~ check <> (Answer, Answer.unapply _)
-  def autoInc = id.?  ~ qid ~ response ~ check  <> (Answer, Answer.unapply _) returning id
+  
+  def * = id.? ~ qid ~ response ~false <> (Answer, Answer.unapply _)
+  def autoInc = id.?  ~ qid ~ response ~false  <> (Answer, Answer.unapply _) returning id
 
-  def forInsert =  qid ~ response ~ check <> (
-    t => Answer(None, t._1, t._2, t._3),
-    (p: Answer) => Some(( p.Qid, p.resp, p.check)))
+  def forInsert =  qid ~ response  <> (
+    t => Answer(None, t._1, t._2,false),
+    (p: Answer) => Some(( p.Qid, p.resp)))
 
 
-  def reset() {
-    play.api.db.slick.DB.withSession { implicit session =>
-      // Output database DDL create statements to bootstrap Evolutions file.
-      Logger.info(Answers.ddl.dropStatements.mkString("/n"))
-      Logger.info(Answers.ddl.createStatements.mkString("/n"))
-
-      // Delete all rows
-      Query(Answers).delete
-    }
-  }
 
   /**
    * Deletes a product.

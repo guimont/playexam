@@ -69,8 +69,8 @@ object CResults extends Table[CResult]("results") {
   /**
    * Returns all products sorted by candidate id .
    */
-  def findAllbyQEid(qid: Long,eid: Long): List[CResult] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(CResults).filter(_.eid === eid).filter(_.qid === qid).list
+  def findAllbyQEid(qid: Long,eid: Long): Option[CResult] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(CResults).filter(_.eid === eid).filter(_.qid === qid).firstOption
   }
 
   /**
