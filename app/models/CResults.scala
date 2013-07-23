@@ -69,7 +69,7 @@ object CResults extends Table[CResult]("results") {
   /**
    * Returns all products sorted by candidate id .
    */
-  def findAllbyQEid(qid: Long,eid: Long): Option[CResult] = play.api.db.slick.DB.withSession { implicit session =>
+  def findbyQEid(qid: Long,eid: Long): Option[CResult] = play.api.db.slick.DB.withSession { implicit session =>
     Query(CResults).filter(_.eid === eid).filter(_.qid === qid).firstOption
   }
 
@@ -103,7 +103,9 @@ object CResults extends Table[CResult]("results") {
         listK = listK + (e.charAt(5)+16).toChar + " "
       }
     }
-    val result = CResult(None, qid,eid, listK)
-    CResults.insert(result)
+
+    CResults.findbyQEid(qid,eid).map{c =>
+      CResults.update(c.id.getOrElse(0), CResult(c.id, qid,eid, listK))
+    }.getOrElse(CResults.insert(CResult(None, qid,eid, listK)))
   }
 }

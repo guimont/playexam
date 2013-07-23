@@ -21,7 +21,11 @@
             @if(question.open ==true){
                 <div class="controls">
                   <label class="checkbox">
-                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true" checked>@answer.resp</input>
+                    @if(answer.check) {
+                        <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true" checked>@answer.resp</input>
+                    } else {
+                        <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true">@answer.resp</input>
+                    }
                   </label>
                 </div>
             } else {

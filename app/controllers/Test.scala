@@ -21,20 +21,32 @@ object Test extends Controller {
   def show(id: Long) = Action { implicit request =>
       request.session.get("SessionID").map { Sid => 
         Questions.find(id).map { question =>
+          
           Ok(views.html.details(id,Tests.find(Exams.find(Sid.toLong).tid).nb_q,
-            question,Parts.findAllbyQId(id), Answers.findAllbyQId(id)))
+            question,Parts.findAllbyQId(id), FillAnswer(id,Sid.toLong,Answers.findAllbyQId(id))))
         }.getOrElse(Unauthorized("Oops, you are not connected"))
       }.getOrElse(Unauthorized("Oops, you are not connected"))
     }
 
 
-  def FillAnswer(id: Long, eid: Long, list:List[Answer]) =  { 
-    CResults.findAllbyQEid(id,eid).map ( res =>
-        res.resp.split(" ").map { i =>
-        Logger.info((i.charAt(0)-48).toString)
-      }  
-    )
+  def FillAnswer(id: Long, eid: Long, list:List[Answer]) :List[Answer]  =  { 
+    var listA : Set[Answer] = Set()
+    CResults.findbyQEid(id,eid).map { res =>
+      var checked  = new Array[Boolean](22)
+      res.resp.split(" ").map { i =>
+        Logger.info(i+" "+(i.charAt(0)-64).toString)
+        checked((i.charAt(0)-64)) = true
+      }
+      for ((a,index) <-list.zipWithIndex) {
+        Logger.info(a.toString + " " +index)
+        listA = listA + Answer(a.id, a.Qid, a.resp, checked(index+1))
+      }
+    }.getOrElse{
+      list.map (l=> listA = listA + Answer(l.id, l.Qid, l.resp, l.check))
+    }
+    listA.toList.sortBy(l =>l.id)
   }
+    
     def answer(id: Long) = Action { implicit request =>
      
       Logger.info(request.body.toString); 
