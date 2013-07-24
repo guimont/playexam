@@ -28,6 +28,7 @@ GET     /exam/:id                 	controllers.ExamForm.exam(id: Long)
 GET     /exam/createform/:id        controllers.ExamForm.createForm(id: Long)
 POST	/exam/create/:id   			controllers.ExamForm.create(id: Long)
 GET     /exam/launch/:id            controllers.ExamForm.launch(id: Long)
+GET     /exam/delete/:id            controllers.ExamForm.delete(id: Long)
 
 
 GET     /:token                     controllers.Application.startFormToken(token: String)

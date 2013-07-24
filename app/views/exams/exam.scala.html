@@ -12,7 +12,8 @@
      <tr>
 
   <tr>
-      <td>@exam.token</td>
+      
+      <td><a href="@controllers.routes.Application.startFormToken(exam.token.getOrElse(""))">@exam.token.getOrElse("")</a></td>
       <td>@exam.notifier_1</td>
       <td>@exam.date</td>
       <td>@exam.note</td>
@@ -29,5 +30,7 @@
 
   </table>
 	<a href="@controllers.routes.CandidateForm.candidates" class="btn btn-primary btn-mini">Candidates list</a>
+
+  <a href="@controllers.routes.ExamForm.delete(exam.id.getOrElse(-1))" class="btn btn-danger btn-mini">Delete exam</a>
 
 }

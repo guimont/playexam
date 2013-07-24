@@ -53,8 +53,11 @@ object Exams extends Table[Exam]("exams") {
    * Deletes a product.
    */
   def delete(id: Long) {
-    play.api.db.slick.DB.withSession { implicit session =>
-      Exams.where(_.id === id).delete
+    if (id == -1L) Logger.info("Cannot delete exam. id not found")
+    else {
+      play.api.db.slick.DB.withSession { implicit session =>
+        Exams.where(_.id === id).delete
+      }
     }
   }
 
@@ -94,10 +97,12 @@ object Exams extends Table[Exam]("exams") {
     }
   }
 
+  import java.util._
+  import java.text._
   def updateNote( e: Exam, note : Float) {
       play.api.db.slick.DB.withSession { implicit session =>
         Exams.where(_.id === e.id).update( 
-          Exam(e.id, e.cid, e.tid, e.token, e.date, e.notifier_1, note))
+          Exam(e.id, e.cid, e.tid, Some("token consumed"), Some(new SimpleDateFormat("yyyy-MM-dd-HH:mm:ss").format(new Date)), e.notifier_1, note))
     }
   }
 

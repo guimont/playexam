@@ -16,10 +16,10 @@ import models.{CResult,CResults}
 object ExamForm extends Controller {
  
   
-  def exam (id: Long ) = Action { implicit request =>
+  def exam (cid: Long ) = Action { implicit request =>
     //questions // cresult
-    val e = Exams.findbyCId(id)
-    Ok(views.html.exams.exam(e, Questions.findAllbyTid(e.tid) , CResults.findAllbyEid(id) ))
+    val e = Exams.findbyCId(cid)
+    Ok(views.html.exams.exam(e, Questions.findAllbyTid(e.tid) , CResults.findAllbyEid(e.id.getOrElse(0)) ))
   }
 
 
@@ -32,23 +32,29 @@ object ExamForm extends Controller {
   }
 
 
-  def create(id: Long) = Action { implicit request =>
+  def create(cid: Long) = Action { implicit request =>
     examFootprint.bindFromRequest.fold(
       formWithErrors => {
-        Ok(views.html.exams.create(id,formWithErrors,TestName.options))},
+        Ok(views.html.exams.create(cid,formWithErrors,TestName.options))},
       success = { newExam =>
         Logger.info("create exam"); 
-      	Exams.insert(id,newExam)
-      	Redirect(routes.ExamForm.launch(id))
+      	Exams.insert(cid,newExam)
+      	Redirect(routes.ExamForm.launch(cid))
       }
     )
   }
 
 
-  def launch(id: Long) = Action { implicit request =>   
-    Exams.findbyCId(id).token.map { token=>
+  def launch(cid: Long) = Action { implicit request =>   
+    Exams.findbyCId(cid).token.map { token=>
       Ok(views.html.exams.launch( token)) 
     } .getOrElse(Redirect(routes.CandidateForm.candidates)) 
+  }
+
+
+   def delete(id: Long) = Action { implicit request =>   
+    Exams.delete(id)
+    Redirect(routes.CandidateForm.candidates)
   }
 
 }

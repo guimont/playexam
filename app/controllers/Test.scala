@@ -13,21 +13,28 @@
   import models.{TResult,TResults}
   import models.Exams
   import models.Tests
+  import models.CResultFootprint
 
 
 
 object Test extends Controller {
 
-  def show(id: Long) = Action { implicit request =>
+  val testForm = Form(mapping(
+    "test" -> text)(CResultFootprint.apply)(CResultFootprint.unapply))
+
+    def show(id: Long) = Action { implicit request =>
       request.session.get("SessionID").map { Sid => 
         Questions.find(id).map { question =>
+          showCheck(id,Sid.toLong,question)
           
-          Ok(views.html.details(id,Tests.find(Exams.find(Sid.toLong).tid).nb_q,
-            question,Parts.findAllbyQId(id), FillAnswer(id,Sid.toLong,Answers.findAllbyQId(id))))
         }.getOrElse(Unauthorized("Oops, you are not connected"))
       }.getOrElse(Unauthorized("Oops, you are not connected"))
     }
 
+    def showCheck(id:Long, sid: Long, question: Question) = {
+      Ok(views.html.details(id,testForm,Tests.find(Exams.find(sid).tid).nb_q,
+            question,Parts.findAllbyQId(id), FillAnswer(id,sid,Answers.findAllbyQId(id))))
+    }
 
   def FillAnswer(id: Long, eid: Long, list:List[Answer]) :List[Answer]  =  { 
     var listA : Set[Answer] = Set()
@@ -60,6 +67,19 @@ object Test extends Controller {
 
       }.getOrElse(Unauthorized("Oops, you are not connected"))      
     }
+
+     def answerText(id: Long) = Action { implicit request =>
+        Logger.info(request.body.toString); 
+        request.session.get("SessionID").map { Sid =>
+        
+        
+        if (Tests.find(Exams.find(Sid.toLong).tid).nb_q == id)
+          Redirect(routes.Test.end)
+        else
+          Redirect(routes.Test.show(id+1))
+
+      }.getOrElse(Unauthorized("Oops, you are not connected"))   
+     }
 
 
     def end = Action { implicit request =>
