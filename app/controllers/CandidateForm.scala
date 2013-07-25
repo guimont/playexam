@@ -47,9 +47,6 @@ object CandidateForm extends Controller  with Secured {
       listK = listK+ CandidateExam(candidate.id.getOrElse(0),Option(n),candidate.date, candidate.firstname ,candidate.lastname)
     }
 
-    listK.map(e=> 
-      Logger.info(e.toString))
-
     Ok(views.html.candidate.candidate(listK.toList))
   }
 

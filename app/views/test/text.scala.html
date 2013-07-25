@@ -1,0 +1,32 @@
+@(id: Long, testForm:Form[models.CResultFootprint], max:Long , question: Question, listPart: Seq[Part], answer: Answer)
+
+@import views.html.helper.bootstrap._
+@main {
+
+	<div class="question">
+	    <dd>@question.description</dd>
+		    @for(part <- listPart) {
+		        @part.part
+		    }
+    </div>
+
+   
+    	 @helper.form(action = controllers.routes.Test.answerText(id)) {
+ <div class="answer">
+	    <label class="control-label" for="description">Answer</label>
+	    <div class="controls">
+	    	@helper.textarea(testForm("test"), args = 'rows -> 10,'cols -> 100)
+    	</div>
+
+    	 @if(id > 1) {
+            <a href="@controllers.routes.Test.show(id-1)" class="btn btn-primary">Previous</a>
+        }
+        @if(id != max) {
+            <button type="submit" class="btn btn-primary">Next</button>
+        } else {
+            <button type="submit" class="btn btn-primary">Finish</button>
+        }
+    </div>
+ 	}
+
+}

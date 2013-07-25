@@ -82,6 +82,13 @@ object CResults extends Table[CResult]("results") {
     }
   }
 
+  def insertResponse(qid: Long, eid: Long , resp: String) {
+
+    CResults.findbyQEid(qid,eid).map{c =>
+      CResults.update(c.id.getOrElse(0), CResult(c.id, qid,eid, resp))
+    }.getOrElse(CResults.insert(CResult(None, qid,eid, resp)))
+  }
+
   /**
    * Updates the given product.
    */

@@ -34,7 +34,6 @@ case class CandidateExam (
  */
 object Candidates extends Table[Candidate]("candidates") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
-  /*def date = column[DateTime]("datecrea")*/
   def date = column[String]("datecrea")
   def firstname = column[String]("firstname")
   def lastname = column[String]("lastname")

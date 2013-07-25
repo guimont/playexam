@@ -9,12 +9,13 @@ GET     /index                      controllers.Application.startForm
 POST	/start  					controllers.Application.start
 
 # Authentication
-GET     /login                              controllers.Application.login
-POST    /login                              controllers.Application.authenticate
-GET     /logout                             controllers.Application.logout
+GET     /login                       controllers.Application.login
+POST    /login                       controllers.Application.authenticate
+GET     /logout                      controllers.Application.logout
 
 
-POST    /exo/:id       				controllers.Test.answer(id: Long) 
+POST    /exoList/:id       			controllers.Test.answer(id: Long) 
+POST    /exoText/:id       			controllers.Test.answerText(id: Long) 
 GET 	/exo/:id		  			controllers.Test.show(id: Long)
 GET		/end						controllers.Test.end
 

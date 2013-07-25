@@ -60,6 +60,13 @@ object Answers extends Table[Answer]("answers") {
   }
 
   /**
+   * Returns Answer for question with id
+   */
+  def findbyQId(qid: Long): Answer = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Answers).filter(_.qid === qid).sortBy(_.id).list.head
+  }
+
+  /**
    * Inserts the given product.
    */
   def insert(question: Answer) {

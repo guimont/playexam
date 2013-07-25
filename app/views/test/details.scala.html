@@ -1,0 +1,43 @@
+@(id: Long, max:Long , question: Question, listPart: Seq[Part], list: Seq[Answer])
+
+@main {
+  
+<table>
+  <dl>
+   
+    <div class="question">
+    <dd>@question.description</dd>
+    @for(part <- listPart) {
+        @part.part
+    }
+    </div>
+
+    <ul class="answer">
+    <form action="@routes.Test.answer(id)" method="post">
+        <dt>Select correct answer(s):</dt>
+        @for((answer, index) <- list.zipWithIndex) {
+            <div class="controls">
+                <label class="checkbox">
+                 @if(answer.check) {
+                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true" checked>@answer.resp</input>
+                } else {
+                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true">@answer.resp</input>
+                }
+                </label>
+            </div>      
+        }
+        @if(id > 1) {
+            <a href="@controllers.routes.Test.show(id-1)" class="btn btn-primary">Previous</a>
+        }
+        @if(id != max) {
+            <button type="submit" class="btn btn-primary">Next</button>
+        } else {
+            <button type="submit" class="btn btn-primary">Finish</button>
+        }
+       
+    </form>
+    </ul>
+
+  </dl>
+</table>
+}
