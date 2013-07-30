@@ -75,7 +75,9 @@
           Exams.findbyToken(token.startid).map {
             exam => {
               val sid = exam.id.getOrElse(0).toString
-              Cache.set(sid, new Date())
+              
+              Logger.info("add in cache : "+ sid)
+              Cache.set(sid, System.currentTimeMillis())
               Redirect(routes.Test.show(1)).withSession(
               "SessionID" -> sid)
             }

@@ -23,9 +23,9 @@ object WebSockets extends Controller {
       Logger.info("getTimer")
       request.session.get("SessionID").map { Sid => 
         Logger.info("request cache: "+Sid)
-        val refDate: Option[Date] = Cache.getAs[Date](Sid)
-        Logger.info("date: "+dateFormat.format(refDate))
-        dateFormat.format(refDate)
+        val refDate: Option[Long] = Cache.getAs[Long](Sid)
+        Logger.info("date: "+(System.currentTimeMillis()-refDate.getOrElse(0L)))
+        dateFormat.format(new Date(1800000L - (System.currentTimeMillis()-refDate.getOrElse(0L))))        
       }.getOrElse{
         Logger.info("no SessionID")
         "no time"}
