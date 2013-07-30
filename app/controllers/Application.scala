@@ -6,12 +6,12 @@
   import play.api.data.Forms._
   import play.api.mvc.RequestHeader
 
-
-
   import models.{Candidate,Candidates}
   import models.StartFootprint
   import models.Exams
   import models.Users
+  import play.api.cache._
+  import play.api.Play.current
 
   case class Index(name:String,res:List[Boolean])
 
@@ -63,7 +63,8 @@
       Ok(views.html.index(startFootprint.fill(StartFootprint(token))))
     }
 
-
+    import java.util._
+    import java.text._
     def start = Action { implicit request =>
       startFootprint.bindFromRequest.fold(
       formWithErrors => {
@@ -73,8 +74,10 @@
           Logger.info(token.startid); 
           Exams.findbyToken(token.startid).map {
             exam => {
+              val sid = exam.id.getOrElse(0).toString
+              Cache.set(sid, new Date())
               Redirect(routes.Test.show(1)).withSession(
-              "SessionID" -> exam.id.getOrElse(0).toString)
+              "SessionID" -> sid)
             }
           } getOrElse Ok(views.html.index(startFootprint))
         }
