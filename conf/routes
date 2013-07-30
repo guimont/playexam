@@ -31,6 +31,8 @@ POST	/exam/create/:id   			controllers.ExamForm.create(id: Long)
 GET     /exam/launch/:id            controllers.ExamForm.launch(id: Long)
 GET     /exam/delete/:id            controllers.ExamForm.delete(id: Long)
 
+GET     /statusTimer     			controllers.WebSockets.statusTimer()
+
 
 GET     /:token                     controllers.Application.startFormToken(token: String)
 

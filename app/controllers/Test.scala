@@ -25,8 +25,9 @@ object Test extends Controller {
   def show(id: Long) = Action { implicit request =>
     request.session.get("SessionID").map { Sid => 
       Questions.find(id).map { question =>
-        if (!question.open)
-          showCheck(id,Sid.toLong,question)
+        if (!question.open) 
+          Ok(views.html.test.details(id,Tests.find(Exams.find(Sid.toLong).tid).nb_q,
+          question,Parts.findAllbyQId(id), FillAnswerCheck(id,Sid.toLong,Answers.findAllbyQId(id))))
         else 
            showText(id,Sid.toLong,question)
           
@@ -35,8 +36,7 @@ object Test extends Controller {
   }
 
   def showCheck(id:Long, sid: Long, question: Question) = {
-    Ok(views.html.test.details(id,Tests.find(Exams.find(sid).tid).nb_q,
-          question,Parts.findAllbyQId(id), FillAnswerCheck(id,sid,Answers.findAllbyQId(id))))
+    
   }
 
   def showText(id:Long, sid: Long, question: Question) = {
