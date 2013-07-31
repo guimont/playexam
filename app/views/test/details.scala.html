@@ -1,4 +1,4 @@
-@(id: Long, max:Long , question: Question, listPart: Seq[Part], list: Seq[Answer])(implicit request: RequestHeader)
+@(id: Long, max:Long , question: Question, listPart: Seq[Part], list: Seq[Answer], time: String)(implicit request: RequestHeader)
 
 @main {
 
@@ -6,11 +6,20 @@
     $(function() {
       var ws = new WebSocket("@routes.WebSockets.statusTimer.webSocketURL()");
       ws.onmessage = function(msg) {
-        $('#load-average').text(msg.data)
+        clockChanged(msg.data)
       }
     })
+    var clockChanged = function(time) {
+        $('#clock').html(time.replace(/(\d)/g, '<span>$1</span>'))
+    }
+   
+    $(document).ready(function() {
+        clockChanged((@time)+'')
+    });
+
   </script>
-  <h1>Timer: <span id="load-average"></span></h1>
+  <h1 id="clock"></h1>
+
   
 <table>
   <dl>

@@ -27,42 +27,15 @@ object Test extends Controller {
       Questions.find(id).map { question =>
         if (!question.open) 
           Ok(views.html.test.details(id,Tests.find(Exams.find(Sid.toLong).tid).nb_q,
-          question,Parts.findAllbyQId(id), FillAnswerCheck(id,Sid.toLong,Answers.findAllbyQId(id))))
+            question,Parts.findAllbyQId(id), Answers.fillAnswerCheck(id,Sid.toLong,Answers.findAllbyQId(id)),
+            WebSockets.getTimer(request)))
         else 
-           showText(id,Sid.toLong,question)
+          Ok(views.html.test.text(id,testForm, Tests.find(Exams.find(Sid.toLong).tid).nb_q,
+            question, Parts.findAllbyQId(id), Answers.findbyQId(id)))
           
       }.getOrElse(Unauthorized("Oops, you are not connected"))
     }.getOrElse(Unauthorized("Oops, you are not connected"))
   }
-
-  def showCheck(id:Long, sid: Long, question: Question) = {
-    
-  }
-
-  def showText(id:Long, sid: Long, question: Question) = {
-    Ok(views.html.test.text(id,testForm, Tests.find(Exams.find(sid).tid).nb_q,
-          question, Parts.findAllbyQId(id), Answers.findbyQId(id)))
-  }
-
-
-  def FillAnswerCheck(id: Long, eid: Long, list:List[Answer]) :List[Answer]  =  { 
-    var listA : Set[Answer] = Set()
-    CResults.findbyQEid(id,eid).map { res =>
-      var checked  = new Array[Boolean](22)
-      res.resp.split(" ").map { i =>
-        checked((i.charAt(0)-64)) = true
-      }
-      for ((a,index) <-list.zipWithIndex) {
-        listA = listA + Answer(a.id, a.Qid, a.resp, checked(index+1))
-      }
-    }.getOrElse{
-      list.map (l=> listA = listA + Answer(l.id, l.Qid, l.resp, l.check))
-    }
-    listA.toList.sortBy(l =>l.id)
-  }
-
-
-
     
   def answer(id: Long) = Action { implicit request =>
     request.session.get("SessionID").map { Sid =>

@@ -100,12 +100,8 @@ object CResults extends Table[CResult]("results") {
 
 
   def decode(qid: Long, eid: Long, res:String ) {
-    Logger.info(res)
-
     var listK : String = ""
-    val delims = "[( ,-]"
-    val tokens = res.split(delims)
-    tokens.map{e=> 
+    res.split("[( ,-]").map{e=> 
       if (e.startsWith("index")) {
         listK = listK + (e.charAt(5)+16).toChar + " "
       }

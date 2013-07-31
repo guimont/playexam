@@ -84,4 +84,21 @@ object Answers extends Table[Answer]("answers") {
     }
   }
 
+
+  def fillAnswerCheck(id: Long, eid: Long, list:List[Answer]) :List[Answer]  =  { 
+    var listA : Set[Answer] = Set()
+    CResults.findbyQEid(id,eid).map { res =>
+      var checked  = new Array[Boolean](22)
+      res.resp.split(" ").map { i =>
+        checked((i.charAt(0)-64)) = true
+      }
+      for ((a,index) <-list.zipWithIndex) {
+        listA = listA + Answer(a.id, a.Qid, a.resp, checked(index+1))
+      }
+    }.getOrElse{
+      list.map (l=> listA = listA + Answer(l.id, l.Qid, l.resp, l.check))
+    }
+    listA.toList.sortBy(l =>l.id)
+  }
+
 }
