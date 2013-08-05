@@ -88,10 +88,13 @@ object Answers extends Table[Answer]("answers") {
   def fillAnswerCheck(id: Long, eid: Long, list:List[Answer]) :List[Answer]  =  { 
     var listA : Set[Answer] = Set()
     CResults.findbyQEid(id,eid).map { res =>
+       Logger.info(res.resp)
       var checked  = new Array[Boolean](22)
-      res.resp.split(" ").map { i =>
-        checked((i.charAt(0)-64)) = true
-      }
+      if (res.resp.isEmpty == false)
+        res.resp.split(" ").map { i =>
+          Logger.info(i)
+          checked((i.charAt(0)-64)) = true
+        }
       for ((a,index) <-list.zipWithIndex) {
         listA = listA + Answer(a.id, a.Qid, a.resp, checked(index+1))
       }

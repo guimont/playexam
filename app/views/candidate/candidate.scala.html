@@ -1,14 +1,14 @@
 @(candidates: Seq[CandidateExam])
 
 @main {
-<table>
-  <dl>
-  <table>
+
+  <table class="table table-striped list">
     <tr>
       <th>first name</th>
       <th>last name</th>
       <th>date</th>
       <th>exam id</th>
+      <th></th>
     </tr>
   @candidates.map { candidate =>
   <tr>

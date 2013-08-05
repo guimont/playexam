@@ -4,7 +4,7 @@
 @main {
     <div class="container">
 
-      <h2>Create examan for candidate ID #@id</h2>
+      <h2>Create examan for candidate</h2>
       @helper.form(action = routes.ExamForm.create(id)) {
           
           @examForm.globalError.map { error =>
@@ -22,9 +22,9 @@
                 '_showConstraints -> false
             )
           
-          <div class="form-actions">
+          
             <button type="submit" class="btn btn-primary">Create exam</button>
-          </div>
+          
       }
 
     </div>
