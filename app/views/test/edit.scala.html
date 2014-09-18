@@ -1,0 +1,33 @@
+@(id: Long, question: Question, list: Seq[Answer])
+
+@main {
+  <dl>
+   
+    <div class="question">
+    <dt>@question.description</dt>
+    </div>
+
+    <div class="answerbase">
+    <form action="" method="post">
+        <h3>Select correct answer(s):</h3>
+        <div class="answer">
+        @for((answer, index) <- list.zipWithIndex) {  
+                <label class="checkbox">
+                 @if(answer.check) {
+                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true" checked>@answer.resp
+                } else {
+                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true">@answer.resp
+                }
+                </label>          
+        }
+        
+        </div>
+               
+        <h2>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </h2>
+    </form>
+    </div>
+
+  </dl>
+}

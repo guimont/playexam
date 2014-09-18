@@ -1,0 +1,225 @@
+.list {
+    margin-top: 5%;
+
+}
+
+/* Space out content a bit */
+body {
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+
+/* Everything but the jumbotron gets side spacing for mobile first views */
+.header,
+.marketing,
+.footer {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Custom page header */
+.header {
+    border-bottom: 1px solid #e5e5e5;
+}
+/* Make the masthead heading the same height as the navigation */
+.header h3 {
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 40px;
+    padding-bottom: 19px;
+}
+
+/* Custom page footer */
+.footer {
+    padding-top: 19px;
+    color: #777;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* Customize container */
+@media (min-width: 768px) {
+    .container {
+        max-width: 730px;
+    }
+}
+.container-narrow > hr {
+    margin: 30px 0;
+}
+
+/* Main marketing message and sign up button */
+.jumbotron {
+    text-align: center;
+    border-bottom: 1px solid #e5e5e5;
+}
+.jumbotron .btn {
+    font-size: 21px;
+    padding: 14px 24px;
+}
+
+/* Supporting marketing content */
+.marketing {
+    margin: 40px 0;
+}
+.marketing p + h4 {
+    margin-top: 28px;
+}
+
+/* Responsive: Portrait tablets and up */
+@media screen and (min-width: 768px) {
+    /* Remove the padding we set earlier */
+    .header,
+    .marketing,
+    .footer {
+        padding-left: 0;
+        padding-right: 0;
+    }
+    /* Space out the masthead */
+    .header {
+        margin-bottom: 30px;
+    }
+    /* Remove the bottom border on the jumbotron for visual effect */
+    .jumbotron {
+        border-bottom: 0;
+    }
+}
+/*
+.container {
+ margin-top: 15%;
+color: #FDFFFE;
+padding: 10px;
+width: 350px;
+margin-left: auto;
+margin-right: auto;
+
+border-radius: 10px;
+background-image: -webkit-linear-gradient(top, #352730, #33225E); /* Safari 5.1+, Chrome 10+ *
+background-image: linear-gradient(to bottom, #352730, #33225E);
+}                        */
+
+
+.examQ {
+    margin-left: 5px;
+    margin-top: 5px;
+    font-size: small;
+    width: 600px;
+    padding: 1%;
+    background: #6AA15F;
+    border-radius: 10px;
+    word-wrap: break-word;
+    line-height: 65%;
+    background-image: -webkit-linear-gradient(top, #6AA15F, #9FD98F); /* Safari 5.1+, Chrome 10+ */
+    background-image: linear-gradient(to bottom, #6AA15F, #9FD98F);
+}
+
+.question {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    font-size: small;
+    width: 600px;
+    padding: 1%;
+    background: #6AA15F;
+    border-radius: 10px;
+    word-wrap: break-word;
+    line-height: 65%;
+    background-image: -webkit-linear-gradient(top, #F4F5F5, #F4F5F5); /* Safari 5.1+, Chrome 10+ */
+    background-image: linear-gradient(to bottom, #F4F5F5, #F4F5F5);
+}
+
+.answerbase {
+    margin-top: 10px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 600px;
+    padding: 1%;
+    background: #FFD135;
+    border-radius: 10px;
+    word-wrap: break-word;
+    line-height: 90%;
+    background-image: -webkit-linear-gradient(top, #E2E2E2, #E2E2E2); /* Safari 5.1+, Chrome 10+ */
+    background-image: linear-gradient(to bottom, #E2E2E2, #E2E2E2);
+
+}
+
+.answer {
+
+    -webkit-column-count: 2;
+    -webkit-column-width: 75px;
+    -webkit-column-gap: 20px;
+    -webkit-column-rule: 1px solid #fff;
+    -moz-column-count: 2;
+    -moz-column-width: 75px;
+    -moz-column-gap: 20px;
+    -moz-column-rule: 1px solid #fff;
+    -o-column-count: 2;
+    -o-column-width: 75px;
+    -o-column-gap: 20px;
+    -o-column-rule: 1px solid #fff;
+    column-count: 2;
+    column-width: 75px;
+    column-gap: 20px;
+    column-rule: 1px solid #fff;
+    font-weight: normal;
+    font-size: small;
+    line-height: 65%;
+    line-height: 10px;
+
+
+}
+
+
+#clocklabel{
+    margin-top: 50px;
+    display: block;
+    display: inline-block;
+    width: 750px;
+    text-align: center;
+
+}
+
+#clock {
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+
+
+    text-align: center;
+}
+
+#clock span {
+    position: relative;
+    font-size: 48px;
+    display: inline-block;
+    background: #222;
+    margin-right: 3px;
+    padding: 0 10px;
+    color: #fff;
+    text-shadow: 1px 1px 1px #000;
+    border-radius: 6px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,.3);
+    background-image: linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
+    background-image: -o-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
+    background-image: -moz-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
+    background-image: -webkit-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
+    background-image: -ms-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
+    background-image: -webkit-gradient(
+        linear,
+        left bottom,
+        left top,
+        color-stop(0.33, rgb(23,21,21)),
+        color-stop(0.7, rgb(46,45,44))
+    );
+}
+
+#clock span:before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 48%;
+    bottom: 51%;
+    text-indent: -999em;
+    color: #000;
+    background: #000;
+}

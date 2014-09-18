@@ -1,125 +1,13 @@
-.list {
-  margin-top: 5%;
-
-}
-
-.container {
-   margin-top: 5%;
-  color: #FDFFFE;
-  margin-left: 10%;
-  padding: 10px;
-  width: 350px;
-  background: #382830;     
-  border-radius: 10px;
-}
 
 
-.question {
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 20px;
-  font-size: small;
-  width: 600px;
-  padding: 1%;
-  background: #6AA15F;     
-  border-radius: 10px;
-  word-wrap: break-word;
-  white-space:Pre;
-  line-height: 65%;
-  background-image: -moz-linear-gradient(top, #6AA15F, #9FD98F); /* FF3.6 */
-  background-image: -webkit-linear-gradient(top, #6AA15F, #9FD98F); /* Safari 5.1+, Chrome 10+ */
-  background-image: linear-gradient(to bottom, #6AA15F, #9FD98F);
-}
+.id {
+    padding: 30px;
+    margin-bottom: 50px;
+    font-size: 21px;
+    font-weight: 200;
+    line-height: 2.1428571435;
+    color: inherit;
+    background-color: #eeeeee;
 
-.answerbase {
-  margin-top: 10px;
-  margin-left: auto;
-  margin-right: auto;
-  width: 600px;
-  padding: 1%;
-  background: #FFD135;     
-  border-radius: 10px;
-  word-wrap: break-word;
-  line-height: 90%
-  background-image: -moz-linear-gradient(top, #FFD135, #F2D852); /* FF3.6 */
-  background-image: -webkit-linear-gradient(top, #FFD135, #F2D852); /* Safari 5.1+, Chrome 10+ */
-  background-image: linear-gradient(to bottom, #FFD135, #F2D852);
-
-}
-
-.answer {
-  
-   -webkit-column-count: 2;
-    -webkit-column-width: 75px;
-    -webkit-column-gap: 20px;
-    -webkit-column-rule: 1px solid #fff;
-    -moz-column-count: 2;
-    -moz-column-width: 75px;
-    -moz-column-gap: 20px;
-    -moz-column-rule: 1px solid #fff;
-    -o-column-count: 2;
-    -o-column-width: 75px;
-    -o-column-gap: 20px;
-    -o-column-rule: 1px solid #fff;
-    column-count: 2;
-    column-width: 75px;
-    column-gap: 20px;
-    column-rule: 1px solid #fff;
-}
-
-
-#clocklabel{
-    margin-top: 50px;
-    display: block;
-    display: inline-block;
-    width: 750px;
-    text-align: center;
-
-}
-
-#clock {
-     margin-top: 60px;
-     margin-left: auto;
-    margin-right: auto;
-    display: block;
-    
-    
-    text-align: center;
-}
-
-#clock span {
-    position: relative;
-    font-size: 48px;
-    display: inline-block;
-    background: #222;
-    margin-right: 3px;
-    padding: 0 10px;
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
-    border-radius: 6px;
-    box-shadow: 1px 1px 2px rgba(0,0,0,.3);
-    background-image: linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
-    background-image: -o-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
-    background-image: -moz-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
-    background-image: -webkit-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
-    background-image: -ms-linear-gradient(bottom, rgb(23,21,21) 33%, rgb(46,45,44) 70%);
-    background-image: -webkit-gradient(
-      linear,
-      left bottom,
-      left top,
-      color-stop(0.33, rgb(23,21,21)),
-      color-stop(0.7, rgb(46,45,44))
-    );
-}
-
-#clock span:before {
-    content: '–';
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: 48%;
-    bottom: 51%;
-    text-indent: -999em;
-    color: #000;
-    background: #000;
+    -webkit-border-radius: 20px;
 }

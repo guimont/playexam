@@ -3,22 +3,22 @@
 
 @import views.html.helper.bootstrap._
 @main {
-    <div class="container">
+    <div class="id">
 
-      <h2>Start examan. Good luck</h2>
-      @helper.form(action = routes.Application.start) {
-          
-          @startForm.globalError.map { error =>
-            <span class="error">@error.message</span>
+        <h2>Start examan. Good luck</h2>
+        @helper.form(action = routes.Application.start) {
+
+            @startForm.globalError.map { error =>
+                <span class="error">@error.message</span>
             }
-          
-          
-          @helper.inputText(startForm("startid"))
-          
-         
-            <button type="submit" class="btn btn-primary">START</button>
-          
-      }
+
+
+            @helper.inputText(startForm("startid"),'size -> 50)
+
+
+            <h2><button type="submit" class="btn btn-primary">START</button></h2>
+
+        }
 
     </div>
-  }
+}

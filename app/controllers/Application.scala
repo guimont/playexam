@@ -6,10 +6,10 @@
   import play.api.data.Forms._
   import play.api.mvc.RequestHeader
 
-  import models.{Candidate,Candidates}
-  import models.StartFootprint
-  import models.Exams
-  import models.Users
+  import _root_.models.{Candidate,Candidates}
+  import _root_.models.StartFootprint
+  import _root_.models.Exams
+  import _root_.models.Users
   import play.api.cache._
   import play.api.Play.current
 

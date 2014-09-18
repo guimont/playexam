@@ -9,6 +9,7 @@ import play.api.Logger
  */
 case class Question(
   id: Option [Long],
+  qid: Long,
   tid: Long,
   description: String,
   open: Boolean)
@@ -19,15 +20,16 @@ case class Question(
  */
 object Questions extends Table[Question]("questions") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
+  def qid = column[Long]("qid")
   def tid = column[Long]("tid")
   def description = column[String]("description")
   def open = column[Boolean]("open")
-  def * = id.? ~ tid ~ description ~ open <> (Question, Question.unapply _)
-  def autoInc = id.?  ~ tid ~ description ~ open <> (Question, Question.unapply _) returning id
+  def * = id.? ~ qid  ~ tid ~ description ~ open <> (Question, Question.unapply _)
+  def autoInc = id.?  ~ qid ~ tid ~ description ~ open <> (Question, Question.unapply _) returning id
 
-  def forInsert =  tid ~ description ~ open <> (
-    t => Question(None, t._1, t._2, t._3),
-    (p: Question) => Some(( p.tid, p.description, p.open)))
+  def forInsert =  qid ~tid ~ description ~ open <> (
+    t => Question(None, t._1, t._2, t._3, t._4),
+    (p: Question) => Some(( p.qid, p.tid, p.description, p.open)))
 
 
 
@@ -44,6 +46,10 @@ object Questions extends Table[Question]("questions") {
     Query(Questions).filter(_.id === id).list.headOption
   }
 
+
+  def findQ(qid: Long,tid: Long): Option[Question] = play.api.db.slick.DB.withSession { implicit session =>
+    Query(Questions).filter(_.qid === qid).filter(_.tid === tid).list.headOption
+  }
 
   /**
    * Returns all products sorted by EAN code.

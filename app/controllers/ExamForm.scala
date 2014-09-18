@@ -4,12 +4,8 @@ import play.api._
 import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
-import models.CandidateFootprint 
-import models.Candidates 
-import models.{Exams,ExamFootprint}
-import models.TestName
-import models.{Question,Questions}
-import models.{CResult,CResults}
+import _root_.models._
+
 
 
 
@@ -30,7 +26,6 @@ object ExamForm extends Controller {
   def createForm(id: Long) = Action {
     Ok(views.html.exams.create(id,examFootprint,TestName.options))
   }
-
 
   def create(cid: Long) = Action { implicit request =>
     examFootprint.bindFromRequest.fold(

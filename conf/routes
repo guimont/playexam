@@ -19,6 +19,9 @@ POST    /exoText/:id       			controllers.Test.answerText(id: Long)
 GET 	/exo/:id		  			controllers.Test.show(id: Long)
 GET		/end						controllers.Test.end
 
+GET 	/correct/:id		  		controllers.Test.edit(id: Long)
+GET		/startCorrect				controllers.Test.correctManual(id: Long)
+
 GET     /admin    			        controllers.CandidateForm.candidates
 GET     /candidate/list             controllers.CandidateForm.candidates
 GET 	/candidate/createform 		controllers.CandidateForm.createForm

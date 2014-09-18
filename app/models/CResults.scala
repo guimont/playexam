@@ -11,7 +11,8 @@ case class CResult(
   id: Option[Long],
   qid: Long,
   eid: Long,
-  resp: String
+  resp: String,
+  note: Float
   )
 
 
@@ -23,12 +24,13 @@ object CResults extends Table[CResult]("results") {
   def qid = column[Long]("qId")
   def eid = column[Long]("eid")
   def response = column[String]("response")
-  def * = id.? ~ qid ~ eid ~  response <> (CResult, CResult.unapply _)
-  def autoInc = id.?  ~ qid ~ eid  ~ response  <> (CResult, CResult.unapply _) returning id
+  def note = column[Float]("note")
+  def * = id.? ~ qid ~ eid ~  response ~ note <> (CResult, CResult.unapply _)
+  def autoInc = id.?  ~ qid ~ eid  ~ response ~ note <> (CResult, CResult.unapply _) returning id
 
-  def forInsert =  qid ~ eid ~ response <> (
-    t => CResult(None, t._1, t._2 , t._3),
-    (p: CResult) => Some(( p.qid, p.eid, p.resp)))
+  def forInsert =  qid ~ eid ~ response ~ note <> (
+    t => CResult(None, t._1, t._2 , t._3, t._4),
+    (p: CResult) => Some(( p.qid, p.eid, p.resp, p.note)))
 
 
   /**
@@ -85,8 +87,8 @@ object CResults extends Table[CResult]("results") {
   def insertResponse(qid: Long, eid: Long , resp: String) {
 
     CResults.findbyQEid(qid,eid).map{c =>
-      CResults.update(c.id.getOrElse(0), CResult(c.id, qid,eid, resp))
-    }.getOrElse(CResults.insert(CResult(None, qid,eid, resp)))
+      CResults.update(c.id.getOrElse(0), CResult(c.id, qid,eid, resp, 0))
+    }.getOrElse(CResults.insert(CResult(None, qid,eid, resp, 0)))
   }
 
   /**
@@ -95,6 +97,13 @@ object CResults extends Table[CResult]("results") {
   def update(id: Long, question: CResult) {
     play.api.db.slick.DB.withSession { implicit session =>
       CResults.where(_.id === id).update(question)
+    }
+  }
+
+
+  def updateNote(res: CResult, note: Float) {
+    play.api.db.slick.DB.withSession { implicit session =>
+      CResults.where(_.id === res.id).update(CResult(res.id, res.qid , res.eid ,res.resp , note ))
     }
   }
 
@@ -108,7 +117,7 @@ object CResults extends Table[CResult]("results") {
     }
 
     CResults.findbyQEid(qid,eid).map{c =>
-      CResults.update(c.id.getOrElse(0), CResult(c.id, qid,eid, listK))
-    }.getOrElse(CResults.insert(CResult(None, qid,eid, listK)))
+      CResults.update(c.id.getOrElse(0), CResult(c.id, qid,eid, listK, 0))
+    }.getOrElse(CResults.insert(CResult(None, qid,eid, listK, 0)))
   }
 }

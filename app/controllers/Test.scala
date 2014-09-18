@@ -24,14 +24,15 @@ object Test extends Controller {
 
   def show(id: Long) = Action { implicit request =>
     request.session.get("SessionID").map { Sid => 
-      Questions.find(id).map { question =>
+      val e = Exams.find(Sid.toLong)
+      Questions.findQ(id,e.tid).map { question =>
         if (!question.open) 
-          Ok(views.html.test.details(id,Tests.find(Exams.find(Sid.toLong).tid).nb_q,
-            question,Parts.findAllbyQId(id), Answers.fillAnswerCheck(id,Sid.toLong,Answers.findAllbyQId(id)),
+          Ok(views.html.test.details(id,Tests.find(e.tid).nb_q,
+            question,Parts.findAllbyQId(question.id.getOrElse(0)), Answers.fillAnswerCheck(id,Sid.toLong,Answers.findAllbyQId(question.id.getOrElse(0))),
             WebSockets.getTimer(request)))
         else 
           Ok(views.html.test.text(id,testForm, Tests.find(Exams.find(Sid.toLong).tid).nb_q,
-            question, Parts.findAllbyQId(id), Answers.findbyQId(id)))
+            question, Parts.findAllbyQId(question.id.getOrElse(0)), Answers.findbyQId(id),WebSockets.getTimer(request)))
           
       }.getOrElse(Unauthorized("Oops, you are not connected"))
     }.getOrElse(Unauthorized("Oops, you are not connected"))
@@ -74,6 +75,29 @@ object Test extends Controller {
     Ok(views.html.test.end()).withNewSession
   }
 
+
+  /*val editForm = Form(mapping(
+    "resp"  -> text,
+    "note" -> Float
+  ) (CResult.apply)(CResult.unapply)
+*/
+
+  def edit(id: Long) = Action  { implicit request =>
+    request.session.get("SessionID").map { Sid =>
+      Questions.findQ(id,Sid.toLong).map { question =>
+        Ok(views.html.test.edit(id,
+            question, Answers.fillAnswerCheck(id,Sid.toLong,Answers.findAllbyQId(id))))
+      }.getOrElse(Unauthorized("Oops, you are not connected"))
+    }.getOrElse(Unauthorized("Oops, you are not connected"))
+  }
+
+  def correctManual(id: Long) = Action { implicit request =>
+
+    Redirect(routes.Test.edit(1)).withSession(
+              "SessionID" -> id.toString)
+  }
+
+
   def SendMail = {
     import com.typesafe.plugin._
     import play.api.Play.current
@@ -103,9 +127,11 @@ object Test extends Controller {
 
     CResults.findAllbyEid(id).zip(TResults.findAllbyTid(e.tid)).map { n =>
       if(n._2.open == true) {
-        note = note + predicate(n._1.resp, n._2.resp)
-        Exams.updateNote(e,note)
+        val noteQ = predicate(n._1.resp, n._2.resp)
+        CResults.updateNote(n._1,noteQ)
+        note = note + noteQ
       }
     }
+    Exams.updateNote(e,note)
   }
 }

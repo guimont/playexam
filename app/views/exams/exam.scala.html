@@ -17,19 +17,25 @@
       <td>@exam.date</td>
       <td>@exam.note</td>
   </tr> 
- 
+  </table>
+
+<table class="table table-striped list">
+  
  @for((question, result) <- questions.zip(results)) {
  <tr>
-   <td>@question.description</td>
-      <td>@result.resp</td>   
+  <td>@question.description</td>
+  <td>@result.resp</td>
+  <td>@result.note</td>  
 </tr> 
+
  
       
 } 
+</table>
 
-  </table>
+ <div>
 	<a href="@controllers.routes.CandidateForm.candidates" class="btn btn-primary btn-mini">Candidates list</a>
-
+  <a href="@controllers.routes.Test.correctManual(exam.id.getOrElse(-1))" class="btn btn-success btn-mini">Edit Note</a>
   <a href="@controllers.routes.ExamForm.delete(exam.id.getOrElse(-1))" class="btn btn-danger btn-mini">Delete exam</a>
-
+</div>
 }

@@ -1,7 +1,27 @@
-@(id: Long, testForm:Form[models.CResultFootprint], max:Long , question: Question, listPart: Seq[Part], answer: Answer)
+@(id: Long, testForm:Form[models.CResultFootprint], max:Long , question: Question, listPart: Seq[Part], answer: Answer, time: String)(implicit request: RequestHeader)
 
 @import views.html.helper.bootstrap._
 @main {
+
+
+  <script type="text/javascript">
+    $(function() {
+      var ws = new WebSocket("@routes.WebSockets.statusTimer.webSocketURL()");
+      ws.onmessage = function(msg) {
+        clockChanged(msg.data)
+      }
+    })
+    var clockChanged = function(time) {
+        $('#clock').html(time.replace(/(\d)/g, '<span>$1</span>'))
+    }
+   
+    $(document).ready(function() {
+        clockChanged((@time)+'')
+    });
+
+  </script>
+
+  <h1 id="clock"></h1>
 
 	<div class="question">
 	    <dd>@question.description</dd>
@@ -12,7 +32,7 @@
 
    
     	 @helper.form(action = controllers.routes.Test.answerText(id)) {
- <div class="answer">
+ <div class="answerbase">
 	    <label class="control-label" for="description">Answer</label>
 	    <div class="controls">
 	    	@helper.textarea(testForm("test"), args = 'rows -> 10,'cols -> 100)
