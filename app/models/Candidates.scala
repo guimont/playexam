@@ -42,9 +42,13 @@ object Candidates extends Table[Candidate]("candidates") {
   def * = id.? ~ date ~ firstname ~ lastname<> (Candidate, Candidate.unapply _)
   def autoInc = id.?  ~ date ~ firstname ~ lastname  <> (Candidate, Candidate.unapply _) returning id
 
+  val anonymousId =  1L;
+
+
   def forInsert =  date ~ firstname ~ lastname <> (
     t => Candidate(None, t._1, t._2, t._3),
-    (p: Candidate) => Some(( p.date, p.firstname, p.lastname)))
+    (p: Candidate) => Some(( p.date, p.firstname, p.lastname))
+  )
 
 
   /**
@@ -67,7 +71,6 @@ object Candidates extends Table[Candidate]("candidates") {
   def find(id: Long): Option[Candidate] = play.api.db.slick.DB.withSession { implicit session =>
     Query(Candidates).filter(_.id === id).list.headOption
   }
-
 
   /**
    * Inserts the given product.

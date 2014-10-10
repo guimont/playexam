@@ -3,48 +3,56 @@
 @main {
 
     <script type="text/javascript">
-    $(function() {
-      var ws = new WebSocket("@routes.WebSockets.statusTimer.webSocketURL()");
-      ws.onmessage = function(msg) {
-        clockChanged(msg.data)
-      }
-    })
-    var clockChanged = function(time) {
-        $('#clock').html(time.replace(/(\d)/g, '<span>$1</span>'))
-    }
+        var time=@time;
+        $(function() {
+          var ws = new WebSocket("@routes.WebSockets.statusTimer.webSocketURL()");
+          ws.onmessage = function(msg) {
+          if (msg.data==="0000") location.href="@routes.Test.end"
+          clockChanged(msg.data)
+          }
+        })
+
    
     $(document).ready(function() {
         clockChanged((@time)+'')
     });
 
   </script>
+  <div class="headband">
+    <span id="kinetic" style="float: left"></span>
+    <i class="fa fa-question-circle fa-4x  position-start"></i><i>Q1</i>
+    <i class="fa fa-question-circle fa-4x  position-end"></i><i>Q@max</i>
+    <div class="progress pbar">
+        <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:@{id*100/max}%;"></div>
+    </div>
 
-  <h1 id="clock"></h1>
+  </div>
 
   
 <table>
   <dl>
    
-    <div class="question">
-    <dt>@question.description</dt>
-    @for(part <- listPart) {
-        <dt>@part.part</dt>
-    }
+    <div class="question box">
+        <h3>@question.description</h3>
+        @if(listPart) {<pre style="white-space: normal">}
+        @for(part <- listPart) {
+            <code class="java">@part.part</code>
+        }
+        @if(listPart) {</pre>}
     </div>
 
     <div class="answerbase">
     <form action="@routes.Test.answer(id)" method="post">
         <h3>Select correct answer(s):</h3>
-        <div class="answer">
+        <div class="answer box">
         @for((answer, index) <- list.zipWithIndex) {  
-                <label class="checkbox">
-                 @if(answer.check) {
-                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true" checked>@answer.resp</input>
-                } else {
-                    <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true">@answer.resp</input>
-                }
-                </label>
-           
+            <label class="checkbox">
+             @if(answer.check) {
+                <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true" checked><code>@answer.resp</code></input>
+            } else {
+                <input type="checkbox" name="index@(index+1)" id="index@(index+1)" value="true"><code>@answer.resp</code></input>
+            }
+            </label>
         }
         </div>
         @if(id > 1) {

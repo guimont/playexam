@@ -4,8 +4,13 @@ import play.api.db.slick.Config.driver.simple._
 import scala.slick.lifted.Query
 import play.api.Play.current
 import play.api.Logger
+
 /**
- * Question domain model.
+ * Answer object
+ * @param id: Answer id
+ * @param Qid: Question id link to answer
+ * @param resp:  answer title
+ * @param check: use to show candidate response
  */
 case class Answer(
   id: Option[Long],
@@ -15,7 +20,7 @@ case class Answer(
 
 
 /**
- * Slick database mapping.
+ *  Slick database mapping.
  */
 object Answers extends Table[Answer]("answers") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -30,9 +35,9 @@ object Answers extends Table[Answer]("answers") {
     (p: Answer) => Some(( p.Qid, p.resp)))
 
 
-
   /**
-   * Deletes a product.
+   * Delete an answer.
+   * @param id
    */
   def delete(id: Long) {
     play.api.db.slick.DB.withSession { implicit session =>
@@ -40,20 +45,29 @@ object Answers extends Table[Answer]("answers") {
     }
   }
 
+
+  /**
+   * Find answer by id
+   * @param id
+   * @return
+   */
   def find(id: Long): Option[Answer] = play.api.db.slick.DB.withSession { implicit session =>
     Query(Answers).filter(_.id === id).list.headOption
   }
 
 
   /**
-   * Returns all products sorted by EAN code.
+   * Find all answer
+   * @return
    */
   def findAll: List[Answer] = play.api.db.slick.DB.withSession { implicit session =>
     Query(Answers).sortBy(_.id).list
   }
 
   /**
-   * Returns all products sorted by EAN code.
+   * Find all answer by question id
+   * @param qid
+   * @return
    */
   def findAllbyQId(qid: Long): List[Answer] = play.api.db.slick.DB.withSession { implicit session =>
     Query(Answers).filter(_.qid === qid).sortBy(_.id).list
@@ -85,6 +99,13 @@ object Answers extends Table[Answer]("answers") {
   }
 
 
+  /**
+   * Create a mereg list of answer and candidate result
+   * @param id answer id
+   * @param eid exam id
+   * @param list
+   * @return
+   */
   def fillAnswerCheck(id: Long, eid: Long, list:List[Answer]) :List[Answer]  =  { 
     var listA : Set[Answer] = Set()
     CResults.findbyQEid(id,eid).map { res =>

@@ -1,24 +1,10 @@
-
-@(startForm: Form[models.StartFootprint])
-
-@import views.html.helper.bootstrap._
 @main {
-    <div class="id">
+<div class="id">
 
-        <h2>Start examan. Good luck</h2>
-        @helper.form(action = routes.Application.start) {
+    <div><button type="submit" class="btn btn-primary btn-sm">Anonymous</button> Make an anonymous test. Your result are not stored on base. you could have your result at end test only.</div>
 
-            @startForm.globalError.map { error =>
-                <span class="error">@error.message</span>
-            }
+    <div><button type="submit" class="btn btn-primary btn-sm">Admin page</button> Go to admin page. You could create a new user and create a test. your result are stored in base. You could consult them when you want. </div>
 
+</div>
 
-            @helper.inputText(startForm("startid"),'size -> 50)
-
-
-            <h2><button type="submit" class="btn btn-primary">START</button></h2>
-
-        }
-
-    </div>
 }

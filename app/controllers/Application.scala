@@ -6,12 +6,12 @@
   import play.api.data.Forms._
   import play.api.mvc.RequestHeader
 
-  import _root_.models.{Candidate,Candidates}
-  import _root_.models.StartFootprint
-  import _root_.models.Exams
-  import _root_.models.Users
+  import models._
   import play.api.cache._
   import play.api.Play.current
+  import java.util.UUID
+  import models.StartFootprint
+
 
   case class Index(name:String,res:List[Boolean])
 
@@ -29,18 +29,31 @@
     /**
      * Login page.
      */
+    def index = Action { implicit request =>
+
+      val e = Exam(None,Candidates.anonymousId, 1L,Option(UUID.randomUUID().toString()),None,"",0)
+      Exams.insert(e)
+
+      Ok(views.html.start(startFootprint.fill(StartFootprint(e.token.getOrElse("")))))
+    }
+
+    /**
+     * Login page.
+     */
     def login = Action { implicit request =>
-      Ok(views.html.login(loginForm))
+      //Ok(views.html.login(loginForm))
+      Redirect(routes.CandidateForm.candidates).withSession("email" -> "admin.orsyp.com")
     }
 
     /**
      * Handle login form submission.
      */
     def authenticate = Action { implicit request =>
-      loginForm.bindFromRequest.fold(
+      Redirect(routes.CandidateForm.candidates).withSession("email" -> "admin.orsyp.com")
+      /*loginForm.bindFromRequest.fold(
         formWithErrors => BadRequest(views.html.login(formWithErrors)),
         user => Redirect(routes.CandidateForm.candidates).withSession("email" -> user._1)
-      )
+      )*/
     }
 
     /**
@@ -56,11 +69,11 @@
     "startid" -> nonEmptyText)(StartFootprint.apply)(StartFootprint.unapply))
     
     def startForm = Action {
-      Ok(views.html.index(startFootprint))
+      Ok(views.html.start(startFootprint))
     }
 
     def startFormToken(token : String) = Action {
-      Ok(views.html.index(startFootprint.fill(StartFootprint(token))))
+      Ok(views.html.start(startFootprint.fill(StartFootprint(token))))
     }
 
     import java.util._
@@ -69,7 +82,7 @@
       startFootprint.bindFromRequest.fold(
       formWithErrors => {
         Logger.info(formWithErrors.toString)
-        Ok(views.html.index(formWithErrors))},
+        Ok(views.html.start(formWithErrors))},
       success = { token =>
           Logger.info(token.startid); 
           Exams.findbyToken(token.startid).map {
@@ -81,7 +94,7 @@
               Redirect(routes.Test.show(1)).withSession(
               "SessionID" -> sid)
             }
-          } getOrElse Ok(views.html.index(startFootprint))
+          } getOrElse Ok(views.html.start(startFootprint))
         }
       )
     }

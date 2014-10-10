@@ -5,7 +5,7 @@
 
 # Home page
 GET 	/							controllers.Application.startForm
-GET     /index                      controllers.Application.startForm
+GET     /index                      controllers.Application.index
 POST	/start  					controllers.Application.start
 
 # Authentication

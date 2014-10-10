@@ -4,8 +4,14 @@ import play.api.db.slick.Config.driver.simple._
 import scala.slick.lifted.Query
 import play.api.Play.current
 import play.api.Logger
+
 /**
- * Question domain model.
+ * Candidate result object
+ * @param id Candidate Result id
+ * @param qid @Question id
+ * @param eid @Exam id {foreign key for candidate and test object}
+ * @param resp response for qid position
+ * @param note result for the object follow Result object
  */
 case class CResult(
   id: Option[Long],
@@ -17,7 +23,7 @@ case class CResult(
 
 
 /**
- * Slick database mapping.
+ * Slick mapping for CResult object
  */
 object CResults extends Table[CResult]("results") {
   def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
@@ -34,7 +40,8 @@ object CResults extends Table[CResult]("results") {
 
 
   /**
-   * Deletes a product.
+   * Delete Candidate result object
+   * @param id
    */
   def delete(id: Long) {
     play.api.db.slick.DB.withSession { implicit session =>
@@ -42,41 +49,45 @@ object CResults extends Table[CResult]("results") {
     }
   }
 
+  /**
+   * Find Candidate result object with id
+   * @param id
+   * @return
+   */
   def find(id: Long): Option[CResult] = play.api.db.slick.DB.withSession { implicit session =>
     Query(CResults).filter(_.id === id).list.headOption
   }
 
 
   /**
-   * Returns all products sorted by EAN code.
+   * Returns all Candidate result object
    */
   def findAll: List[CResult] = play.api.db.slick.DB.withSession { implicit session =>
     Query(CResults).sortBy(_.id).list
   }
 
   /**
-   * Returns all products sorted by question id .
-   */
-  def findAllbyQId(qid: Long): List[CResult] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(CResults).filter(_.qid === qid).list
-  }
-
-  /**
-   * Returns all products sorted by candidate id .
+   * * Returns all Candidate result object sorted by exam id .
+   * @param eid
+   * @return
    */
   def findAllbyEid(eid: Long): List[CResult] = play.api.db.slick.DB.withSession { implicit session =>
     Query(CResults).filter(_.eid === eid).sortBy(_.qid).list
   }
 
   /**
-   * Returns all products sorted by candidate id .
+   * Returns all Candidate result object sorted by exam id and question id.
+   * @param qid
+   * @param eid
+   * @return
    */
   def findbyQEid(qid: Long,eid: Long): Option[CResult] = play.api.db.slick.DB.withSession { implicit session =>
     Query(CResults).filter(_.eid === eid).filter(_.qid === qid).firstOption
   }
 
   /**
-   * Inserts the given product.
+   * insert result in base
+   * @param result
    */
   def insert(result: CResult) {
     play.api.db.slick.DB.withSession { implicit session =>
@@ -84,6 +95,12 @@ object CResults extends Table[CResult]("results") {
     }
   }
 
+  /**
+   * insert response in candidate test in base
+   * @param qid question id
+   * @param eid examn id
+   * @param resp candidate response
+   */
   def insertResponse(qid: Long, eid: Long , resp: String) {
 
     CResults.findbyQEid(qid,eid).map{c =>
@@ -92,7 +109,9 @@ object CResults extends Table[CResult]("results") {
   }
 
   /**
-   * Updates the given product.
+   * Update Candidate result
+   * @param id
+   * @param question
    */
   def update(id: Long, question: CResult) {
     play.api.db.slick.DB.withSession { implicit session =>
@@ -101,6 +120,11 @@ object CResults extends Table[CResult]("results") {
   }
 
 
+  /**
+   * Update Candidate result note
+   * @param res
+   * @param note
+   */
   def updateNote(res: CResult, note: Float) {
     play.api.db.slick.DB.withSession { implicit session =>
       CResults.where(_.id === res.id).update(CResult(res.id, res.qid , res.eid ,res.resp , note ))
@@ -108,7 +132,13 @@ object CResults extends Table[CResult]("results") {
   }
 
 
-  def decode(qid: Long, eid: Long, res:String ) {
+  /**
+   * Decode output in candidate result format to insert in object
+   * @param qid
+   * @param eid
+   * @param res
+   */
+  def decode(qid: Long, eid: Long, res:String, t:Long ) {
     var listK : String = ""
     res.split("[( ,-]").map{e=> 
       if (e.startsWith("index")) {

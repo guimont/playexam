@@ -1,4 +1,14 @@
 
+.headband { background-color: #eeeeee; height: 120px; margin-top: 30px;}
+.position-start {margin-left: 2%; margin-top: 20px;}
+.position-end {margin-left: 20%; margin-top: 20px;}
+
+
+.pbar {margin-left: 25%; margin-top: 15px; width: 30%; height: 5px;}
+
+.hljs {
+    padding: 0;
+}
 
 .id {
     padding: 30px;
@@ -8,6 +18,48 @@
     line-height: 2.1428571435;
     color: inherit;
     background-color: #eeeeee;
-
     -webkit-border-radius: 20px;
+    margin-top: 50px;
+}
+
+.box {padding: 8px; background-color: #eeeeee; -webkit-border-radius: 20px;}
+.question
+code {white-space: pre;}
+
+
+.answer {
+    font-weight: normal;
+    font-size: small;
+    line-height: 65%;
+    line-height: 10px;
+    margin-bottom: 20px;
+}
+
+/** modify bootstrap checkbox*/
+.answer .checkbox{ min-height: initial;margin-top: 0px; }
+/** modify bootstrap input => use by answer}*/
+input {margin-top: 0;}
+
+
+
+.clock {
+    float: left;
+    margin-bottom: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    text-align: center;
+}
+
+.clock span {
+    position: relative;
+    font-size: 28px;
+    display: inline-block;
+    background: #222;
+    margin-right: 3px;
+    padding: 0 10px;
+    color: #fff;
+    border-radius: 6px;
+    box-shadow: 1px 1px 2px rgba(0,0,0,.3);
+    background-image: -webkit-gradient(linear, left bottom, left top, color-stop(0.33, rgb(66,139,202)), color-stop(0.7, rgb(66,139,202)));
 }

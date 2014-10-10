@@ -92,8 +92,13 @@ object Exams extends Table[Exam]("exams") {
  import java.util.UUID;
   def insert(cid: Long, exam: ExamFootprint) {
       play.api.db.slick.DB.withSession { implicit session =>
-
       Exams.forInsert.insert(Exam(None,cid,exam.tid,Option(UUID.randomUUID().toString()),None,exam.notifier_1,0))
+    }
+  }
+
+  def insert(exam: Exam) {
+    play.api.db.slick.DB.withSession { implicit session =>
+      Exams.forInsert.insert(exam)
     }
   }
 

@@ -41,7 +41,7 @@ object Users extends Table[User]("users") {
   }
       
   def authenticate(email: String, password: String): Option[User] = play.api.db.slick.DB.withSession { implicit session =>
-    Query(Users).filter(_.email === email).list.headOption
+    Query(Users)./*filter(_.email === email).*/list.headOption
   }
   
   /*

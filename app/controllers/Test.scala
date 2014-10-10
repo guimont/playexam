@@ -4,7 +4,6 @@ import play.api._
 import play.api.mvc._
 import play.api.data._
 import play.api.data.Forms._
-import play.api.mvc.RequestHeader
 
 import models.{Question,Questions}
 import models.{Part,Parts}
@@ -14,7 +13,11 @@ import models.{TResult,TResults}
 import models.Exams
 import models.Tests
 import models.CResultFootprint
-
+import play.api.cache.Cache
+import play.api.Play.current
+import scala.collection.immutable.List
+import scala.List
+import scala.collection.mutable.ListBuffer
 
 
 object Test extends Controller {
@@ -23,7 +26,8 @@ object Test extends Controller {
     "test" -> text)(CResultFootprint.apply)(CResultFootprint.unapply))
 
   def show(id: Long) = Action { implicit request =>
-    request.session.get("SessionID").map { Sid => 
+    request.session.get("SessionID").map { Sid =>
+      Cache.set(Sid+id, System.currentTimeMillis())
       val e = Exams.find(Sid.toLong)
       Questions.findQ(id,e.tid).map { question =>
         if (!question.open) 
@@ -37,10 +41,22 @@ object Test extends Controller {
       }.getOrElse(Unauthorized("Oops, you are not connected"))
     }.getOrElse(Unauthorized("Oops, you are not connected"))
   }
-    
+
+  /**
+   * answer request
+   * @param id : question id
+   * @return next page
+   */
   def answer(id: Long) = Action { implicit request =>
     request.session.get("SessionID").map { Sid =>
-      CResults.decode(id,Sid.toInt,request.body.toString)
+      /**ref date for calculate time answer*/
+      val tCache:Long = Cache.getAs[Long](Sid+id).getOrElse(0);
+      val t = (System.currentTimeMillis()-tCache)/1000;
+      Cache.remove(Sid+id);
+      CResults.decode(id,Sid.toInt,request.body.toString, t)
+
+      Cache.set(Sid+"L",Cache.getAs[ListBuffer[Long]](Sid+"L")
+        .getOrElse(new ListBuffer[Long]())+=t)
         
       if (Tests.find(Exams.find(Sid.toLong).tid).nb_q == id)
         Redirect(routes.Test.end)
@@ -69,10 +85,10 @@ object Test extends Controller {
 
   def end = Action { implicit request =>
     request.session.get("SessionID").map { Sid =>
-      CorrectExam(Sid.toInt)
+      val result = CorrectExam(Sid.toInt)
+      Ok(views.html.test.end(result)).withNewSession
     }.getOrElse(Unauthorized("Oops, you are not connected"))   
-      //SendMail 
-    Ok(views.html.test.end()).withNewSession
+      //SendMail
   }
 
 
@@ -121,7 +137,7 @@ object Test extends Controller {
   }
 
 
-  def CorrectExam(id: Long) {
+  def CorrectExam(id: Long): Float = {
     val e = Exams.find(id)
     var note = e.note
 
@@ -133,5 +149,6 @@ object Test extends Controller {
       }
     }
     Exams.updateNote(e,note)
+    note
   }
 }
